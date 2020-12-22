@@ -67,8 +67,8 @@ X線は大気により吸収されやすいという特徴を持つため、宇�
 
 \begin{figure}[h!]
 \centering
-\includegraphics[scale=1.0]{images/foxsi/foxsi3-full-sun.png}
-\caption{foxsi-3 phoenix full sun soft x-ray image}
+\includegraphics[scale=0.7]{images/intro/foxsi3-full-sun.png}
+\caption{FOXSI-3 phoenix full sun soft X-ray image}
 \label{fig:foxsi-fullsun-image}
 \end{figure}
 
@@ -76,14 +76,37 @@ X線は大気により吸収されやすいという特徴を持つため、宇�
 
 光を一点に集光するための素子として、屈折を利用するレンズ、反射を利用したミラー、回折を利用したフレネルゾーンプレートなどが有名である。
 
-WolterミラーにはI型、II型、III型の3種類が存在し(図hoge)、それぞれに長所と短所が存在する。
-I型は内面において反射
-II型は焦点距離が短くできる
-III型は実用化されていない
+WolterミラーにはI型(図\ref{fig:wolter_type_1})、II型(図\ref{fig:wolter_type_2})、III型(図\ref{fig:wolter_type_3})の3種類が存在し、それぞれに長所と短所が存在する。
+I型は放物面、双曲面の順にいずれも内面において反射する構成になっており、後述するマンドレル転写加工がしやすいため高精度な作製が期待できる。
+II型は放物面内面、双曲面外面の順に反射する構成になっている。I型に比べ加工・設置が難しくなるが、内面と外面を重ねた配置にすることができ、焦点距離を短くし光学系全体を小型化することができる。
+III型のX線への応用は未だに進んでいない。
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.4]{images/intro/wolter_type_1.png}
+\caption{Wolter I型}
+\label{fig:wolter_type_1}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.4]{images/intro/wolter_type_2.png}
+\caption{Wolter II型}
+\label{fig:wolter_type_2}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.4]{images/intro/wolter_type_3.png}
+\caption{Wolter III型}
+\label{fig:wolter_type_3}
+\end{figure}
+
 
 \section{本研究で測定対象となるWolterミラーの設計}
 本研究において測定対象となるのは、FOXSI-4での利用が検討されている天体望遠鏡用のWolterミラーであり、放物面、双曲面の順に反射するI型に分類される。
 現在、回転体ミラーの加工では凸形状のマンドレルを高精度に加工し、そこに金属材料を転写するという方式が非常に有利であり、反射面がいずれも内側になるWolter I型が採用されている。
+また、放物面と双曲面が連続に接続されている方が端面が存在しないぶん加工精度の点で有利であるため、そのような構成となっている。
 以下では、開発対象となっているWolter I型のミラーの設計パラメータを図\ref{fig:wolter_params}に対応して表\ref{tb:wolter_params}に示す。
 
 \begin{figure}[h!]
@@ -109,13 +132,14 @@ III型は実用化されていない
 \end{center}
 
 これらを図\ref{fig:wolter_profile}のように放物面部および双曲面部の設計半径として表すと、下式(パラメータは図\ref{tb:wolter_profile_constants})のようになる。
+$f1$は座標系の平行移動に関して任意であるため、変数として表記する。
 
 \begin{equation}
-    r_p(z) = \sqrt{ -4p(z - p - f2) } \\
+    r_p(z) = \sqrt{ -4p(z - p - f_2) } \\
 \end{equation}
 
 \begin{equation}
-    r_h(z) = b \sqrt{ \frac{(z - (f1 + f2) / 2)^2}{a^2} - 1.0 }
+    r_h(z) = b \sqrt{ \frac{(z - (f_1 + f2) / 2)^2}{a^2} - 1.0 }
 \end{equation}
 
 \begin{figure}[h!]
@@ -132,11 +156,11 @@ III型は実用化されていない
         $p$ & 0.0562 mm & 下流端開口直径 \\
         $a$ & 1000.056 mm & 放物面部長さ \\
         $b$ & 10.606 mm & 双曲面部長さ \\ 
-        $f1$ & 任意 & 焦点座標 \\
-        $f2$ & $f1 + \sqrt{ a^2 + b^2 }$  & 共焦点座標 (双曲線のもう一方の焦点) \\\hline
+        $f_1$ & 任意 & 焦点座標 \\
+        $f_2$ & $f_1 + \sqrt{ a^2 + b^2 }$  & 共焦点座標 (双曲線のもう一方の焦点) \\\hline
       \end{tabular}
-      \label{tb:wolter_profile_constants}
       \caption{Wolterミラーの設計半径における定数}
+      \label{tb:wolter_profile_constants}
     \end{center}
 \end{table}
 
@@ -164,10 +188,10 @@ Wolterミラーを光学系に組み込んで利用する際、大きく分け�
 主に集光光学系の文脈において、理想の集光状態を「回折限界集光」と呼ぶ。
 回折限界集光の状態にあるかどうかを判別する1つの指標として用いられるのが、Strehl比である。
 Strehl比とは、実際の集光波面における最大値と回折限界時の集光波面における最大値の比として定義される。
-つまり、振幅を$i(\mathbf{r})$として
+つまり、振幅を$I(\mathbf{r})$として
 
 \[
-r_{\mathrm{Strehl}} = \frac{ \max{\sqrt{i(\mathbf{r})} } }{ \max{ \sqrt{i_{\mathrm{ideal}}( \mathbf{r} )} } }
+r_{\mathrm{Strehl}} = \frac{ \max{\sqrt{I(\mathbf{r})} } }{ \max{ \sqrt{I_{\mathrm{ideal}}( \mathbf{r} )} } }
 \]
 
 と定まる。
@@ -184,14 +208,14 @@ Marechal基準では、Strehl比が0.8以上であるときその系は回折限
 \label{fig:strehl_explanation}
 \end{figure}
 
-\subsection{hpd(half power diameter)}
+\subsection{HPD(Half Power Diameter)}
 strehl比による比較検討では「回折限界集光をしているか」に主眼を置いているが、天文用Wolterミラーのように達成すべき角度分解能が決まっている場合では、直接その分解能要求を満たしているかどうかを判定するのが実用的である。
 分解能を決定するのは、焦点面におけるビームの集光サイズであり、これは大きく2つの定義によって議論される。
 その一つが、Half Power Diameter(HPD)である。HPDの定義は「焦点面上の全強度の50\%の強度を含む円の直径」である。つまり、
 \[
-    \sum_{d\leq d_{\mathrm{hpd}}} \sqrt{ i(\mathbf{r}) } = \frac{1}{2} \sum \sqrt{ i(\mathbf{r}) }
+    \sum_{d\leq d_{\mathrm{HPD}}} \sqrt{ I(\mathbf{r}) } = \frac{1}{2} \sum \sqrt{ I(\mathbf{r}) }
 \]
-を満たすような直径$d_{\mathrm{hpd}}$として定義される。
+を満たすような直径$d_{\mathrm{HPD}}$として定義される。
 図\ref{fig:hpd_explanation}にその例を示す。
 この赤円の内側の強度総和値は、全体の強度総和値の半分になっている。
 
@@ -202,7 +226,7 @@ strehl比による比較検討では「回折限界集光をしているか」�
 \label{fig:hpd_explanation}
 \end{figure}
 
-\subsection{fwhm(full width half maximum)}
+\subsection{FWHM(Full Width Half Maximum)}
 HPDに並んでビーム集光サイズの評価として用いられるのが、FWHM(Full Width Half Maximum)である。
 こちらは焦点面を集光点を通る直線によって切断したプロファイルに対して、「焦点面における最大値の半分の値を取る2点の距離」と定められる。
 図\ref{fig:fwhm_explanation_profile}は1つのプロファイルに対するFWHMの例である。
@@ -211,7 +235,7 @@ HPDに並んでビーム集光サイズの評価として用いられるのが�
 \begin{figure}[h]
 \centering
 \includegraphics[scale=0.6]{images/error_simulation/explanation/fwhm.png}
-\caption{fwhmの例}
+\caption{FWHMの例}
 \label{fig:fwhm_explanation_profile}
 \end{figure}
 
@@ -301,6 +325,7 @@ CDIとは、図\ref{fig:cdi_schematic}に示すように、サンプルに集光
 CDIで広く使われているアルゴリズムの1つが、HIO(Hybrid Iterative Engine)であり、この系にも適用することが可能である。以下にその概要を示す。
 
 \section{タイコグラフィ法}
+前節で述べた疎条件の利用には、
 前節で述べた方法について、用いるオブジェクトには大きく分けて2種類ある。1つは透過関数として表現される
 
 
@@ -317,23 +342,23 @@ CDIで広く使われているアルゴリズムの1つが、HIO(Hybrid Iterativ
 
 \newpage
 \section{実験の構成および設計パラメータ}
-実験装置の概要を以下に示す。
-平行光に対して輪帯状の開口を入れることで、擬似的に輪帯開口の集光光学系を再現する。
-輪帯開口の設計
+3章で提案された手法について、ミラーの測定実験を行う前に、レンズを用いた実験を行い、手法の実現可能性について検討する。
+波面計測の対象となるミラー下流端開口の集光波面を再現できれば、手法の検討を行うことができる。
+これは、平行光に対して輪帯状の開口を入れ、さらにレンズによって集光することで、輪帯状の集光球面波を作ることができ擬似的にミラー下流端面を再現することができる。
 
-レンズによる提案手法の検証に際して、本来の測定対象であるWolterミラーと同様の系を構成するべきであるが、入手性の問題からここではNAがほぼ等しいレンズを用いて実験を行う。
+レンズによる選定に際して、本来の測定対象であるWolterミラーと同様の系を構成するべきであるが、入手性の問題からここでは口径は異なるがNAがほぼ等しいレンズを用いて実験を行う。
 用いたレンズのパラメータは表\ref{tb:focusing_lens_params}に示す通りである。
 
-\begin{table}
+\begin{table}[h]
 \begin{center}
   \begin{tabular}{|c|c|} \hline
     パラメータ & 値 \\ \hline
     直径 & 30.0 mm  \\
     焦点距離 & 1000.000 mm \\
-    設計波長 & 500くらいnm \\ \hline
+    設計波長 & 541.6 nm \\ \hline
   \end{tabular}
-  \label{tb:focusing_lens_params}
   \caption{レンズの設計パラメータ}
+  \label{tb:focusing_lens_params}
 \end{center}
 \end{table}
 
@@ -343,30 +368,46 @@ CDIで広く使われているアルゴリズムの1つが、HIO(Hybrid Iterativ
 \begin{figure}[h!]
 \centering
 
-\subfloat[ピンホール]{
-    \includegraphics[scale=0.5]{images/lens_experiment/pinhole_arrangement.png}
-    \label{fig:lens_pinhole_arrangement}
-}
 \subfloat[輪帯アパーチャ]{
     \centering
     \includegraphics[scale=0.5]{images/lens_experiment/ring_aperture.png}
     \label{fig:lens_ring_aperture}
 }
+\subfloat[ピンホール]{
+    \centering
+    \includegraphics[scale=0.5]{images/lens_experiment/pinhole_arrangement.png}
+    \label{fig:lens_pinhole_arrangement}
+}
 \caption[]{設計図面}
 \label{fig:lens_pinhole_ring_aperture}
 \end{figure}
 
+\begin{table}[h]
 \begin{center}
   \begin{tabular}{|c|c|l|} \hline
-    番号 & A \\ \hline
-    1 & 25 mm  \\
-    2 & 25.5 mm  \\
-    3 & 25.75 mm \\ \hline
- \hline
+    番号 & A & 輪帯幅 \\ \hline
+    1 & 25 mm & 1 mm \\
+    2 & 25.5 mm & 0.5 mm \\
+    3 & 25.75 mm & 0.25 mm \\ \hline
   \end{tabular}
-  \label{tb:lens_ring_aperture_inner_diameter}
   \caption{輪帯アパーチャ内円の直径}
+  \label{tb:lens_ring_aperture_inner_diameter}
 \end{center}
+\end{table}
+
+レーザーでの加工の都合上、もっとも細い輪帯幅0.25 mmのものについてはレーザーを輪帯状に1度走査するという方法を取ったため、設計寸法は参考値となる。
+
+\section{疎条件を利用した位相回復の結果}
+回復計算に用いたパラメータは以下の通りである。
+
+
+\section{下流端走査によるタイコグラフィの結果}
+\subsection{1つ穴の場合}
+
+\subsection{2つ穴の場合}
+
+\subsection{3つ穴の場合}
+
 
 \newpage
 % chapter5
@@ -390,6 +431,16 @@ CDIで広く使われているアルゴリズムの1つが、HIO(Hybrid Iterativ
 \caption{ミラー測定実験系 俯瞰図}
 \label{fig:mirror_experiment_asm_cad_isometric}
 \end{figure}
+
+\section{疎条件を利用した場合の結果}
+
+\section{下流端走査タイコグラフィの結果}
+\subsection{ピンホール1つ穴の場合}
+\subsection{ピンホール2つ穴の場合}
+\subsection{ピンホール3つ穴の場合}
+
+\section{回復波面の解析}
+\subsection{周方向誤差の真円度測定結果との比較}
 
 \newpage
 % chapter6
