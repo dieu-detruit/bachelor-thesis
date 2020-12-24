@@ -1,3 +1,12 @@
 .DS_Store
-build
+build*
 .ipynb_checkpoints
+*.aux
+*.fls
+*.bmt
+*.lof
+*.lot
+*.log
+*.mtc*
+*.pdf
+~\$*.pptx
