@@ -1,0 +1,226 @@
+\chapter{Wolterミラーの誤差応答シミュレーション}
+\thispagestyle{empty}
+\label{chap2}
+\graphicspath{{chap2/figure/}}
+\minitoc
+
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% ================================================== %
+% section
+% ================================================== %
+\section{諸言}
+\label{chap2_introduction}
+
+Wolterミラーを光学系に組み込んで利用する際、大きく分けて2つの誤差によってその理想の集光・結像が損なわれる。
+ひとつは設計曲面と実際に加工されたミラー表面の形状の誤差、もうひとつはミラー設置時の位置・姿勢の誤差である。
+
+これらを与えたとき集光点の様子がどのようになるか、また集光点の変化として許容できる誤差の範囲はどれほどなのかを見積もることは、Wolterミラー評価の重要な軸となる。
+6章では、加工されたミラーに対して測定実験を行い、本章で計算した許容誤差との比較・検討を行う。
+
+
+\clearpage
+% ================================================== %
+% section
+% ================================================== %
+\newpage
+\section{誤差の評価と許容される誤差}
+\label{chap2_beam_evaluation_standard}
+
+結像または集光を行う光学系の是非が、集光面での波面が理想からどれだけ離れているかということで評価されるということを先に述べた。
+いま、理想の集光波面との差異を定量的に評価するためには、具体的な評価軸が必要である。
+そこで主に用いられるのが、Strehl比、HPD、FWHMの3つの特徴量である。
+
+\subsection{Strehl比}
+\label{chap2_strehl_ratio}
+主に集光光学系の文脈において、理想の集光状態を「回折限界集光」と呼ぶ。
+回折限界集光の状態にあるかどうかを判別する1つの指標として用いられるのが、Strehl比である。
+Strehl比とは、実際の集光波面における最大値と回折限界時の集光波面における最大値の比として定義される。
+つまり、振幅を$I(\mathbf{r})$として
+
+\[
+r_{\mathrm{Strehl}} = \frac{ \max{\sqrt{I(\mathbf{r})} } }{ \max{ \sqrt{I_{\mathrm{ideal}}( \mathbf{r} )} } }
+\]
+
+と定まる。
+図\ref{fig:strehl_explanation}にその模式的なグラフを示す。
+Strehl比を評価する基準として、Marechal基準\cite{Bornwolf:1999:Book}が知られている。
+Marechal基準では、Strehl比が0.8以上であるときその系は回折限界集光をしている、とする。
+この0.8という値には体系的な根拠はなく、解析・実験における経験的な指標として扱われている。
+本論文では、この慣例を踏襲し、0.8を閾値としてStrehl比を評価する。
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=10cm]{strehl.png}
+\caption{Strehl比計算の模式図}
+\label{fig:strehl_explanation}
+\end{figure}
+
+\subsection{HPD (Half Power Diameter)}
+\label{chap2_hpd}
+
+Strehl比による比較検討では「回折限界集光をしているか」に主眼を置いているが、天文用Wolterミラーのように達成すべき角度分解能が決まっている場合では、直接その分解能要求を満たしているかどうかを判定するのが実用的である。
+分解能を決定するのは、焦点面におけるビームの集光サイズであり、これは大きく2つの定義によって議論される。
+その一つが、Half Power Diameter(HPD)である。HPDの定義は「焦点面上の全強度の50\%の強度を含む円の直径」である。つまり、
+\[
+    \sum_{d\leq d_{\mathrm{HPD}}} \sqrt{ I(\mathbf{r}) } = \frac{1}{2} \sum \sqrt{ I(\mathbf{r}) }
+\]
+を満たすような直径$d_{\mathrm{HPD}}$として定義される。
+図\ref{fig:hpd_explanation}にその例を示す。
+この赤円の内側の強度総和値は、全体の強度総和値の半分になっている。
+
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=6cm]{HPD.png}
+\caption{HPDの例}
+\label{fig:hpd_explanation}
+\end{figure}
+
+あるHPDを持つようなのふたつの結像点を分離できるような限界の配置が図\ref{fig:hpd_resolution_limit}のときであるとするならば、1秒角分解能という達成目標は図\ref{fig:hpd_arcsecond}が示すようなHPDで言い換えることができる。
+つまり、ミラー上流端中心から半径を見込む角度がちょうど1秒角となるようなHPDが達成目標となる。
+具体的には、ミラー上流端開口から焦点面までの距離が
+HPDを指標とした評価では、これを基準とする。
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=6cm]{hpd_resolution_limit.png}
+\caption{解像限界の図}
+\label{fig:hpd_resolution_limit}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=12cm]{hpd_arcsecond.png}
+\caption{HPDと結像分解能の関係}
+\label{fig:hpd_arcsecond}
+\end{figure}
+
+
+\subsection{FWHM (Full Width Half Maximum)}
+\label{chap2_fwhm}
+
+HPDに並んでビーム集光サイズの評価として用いられるのが、FWHM(Full Width Half Maximum)である。
+こちらは焦点面を集光点を通る直線によって切断したプロファイルに対して、「焦点面における最大値の半分の値を取る2点の距離」と定められる。
+図\ref{fig:fwhm_explanation_profile}は1つのプロファイルに対するFWHMの例である。
+切断する直線には任意性があるため、通常は図\ref{fig:fwhm_explanation}のように水平方向と鉛直方向の切断しこれを評価する。
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=10cm]{FWHM.png}
+\caption{FWHMの例}
+\label{fig:fwhm_explanation_profile}
+\end{figure}
+
+\begin{figure}[!ht]
+\centering
+
+\subfloat[horizontal]{
+    \includegraphics[width=6cm]{FWHM_horizontal.png}
+    \label{fig:fwhm_explanation_horizontal}
+}
+\subfloat[vertical]{
+    \centering
+    \includegraphics[width=6cm]{FWHM_vertical.png}
+    \label{fig:fwhm_explanation_vertical}
+}
+\caption[]{切断の例 水平:\subref{fig:fwhm_explanation_horizontal}, 鉛直:\subref{fig:fwhm_explanation_vertical}}
+\label{fig:fwhm_explanation}
+\end{figure}
+
+
+\clearpage
+% ================================================== %
+% section
+% ================================================== %
+\newpage
+
+\section{Wolterミラーにおける光学波動場の伝播}
+本節では、本研究で測定対象とするWolterミラーの系において適用するべき波動場伝播の近似公式について説明する。
+光学波動場の伝播に関しての詳細は付録において解説する。
+
+\clearpage
+% ================================================== %
+% section
+% ================================================== %
+\newpage
+
+
+\section{シミュレーションの方法}
+この節では、シミュレーションの方法について述べる。
+
+
+\clearpage
+% ================================================== %
+% section
+% ================================================== %
+\newpage
+
+\section{計算条件}
+6章で実際に利用する測定対象のミラーについて、誤差応答のシミュレーションを行う。
+
+\clearpage
+% ================================================== %
+% section
+% ================================================== %
+\newpage
+
+
+\section{各誤差入力に対するシミュレーション}
+\label{chap2_simulation_error_response}
+
+本節では、ミラーの製造過程で発生する様々な誤差要因についてその概要を示した上で、それを与えた時の集光波面の変化についてシミュレーションを行う。
+シミュレーションでは、\ref{chap2_beam_evaluation_standard}節で述べた3つの評価基準に対応した、許容誤差の閾値を示す。
+まず、Strehl比の解析により回折限界集光を達成する上で許容される誤差を評価し、続いて天文用Wolterミラーの達成目標として定めた1秒角分解能の達成に対して求められる許容誤差をHPDおよびFWHMを用いてレイリーの解像限界に照らし合わせて評価する。
+
+\subsection{直径誤差}
+
+\subsection{扁平誤差}
+
+\subsection{周方向形状誤差}
+
+\subsection{長手方向形状誤差}
+
+\subsection{設置角度誤差}
+
+\subsection{設置位置誤差}
+
+
+\clearpage
+% ================================================== %
+% section
+% ================================================== %
+\newpage
+
+
+\clearpage
+% ================================================== %
+% section
+% ================================================== %
+\newpage
+\section{収差解析}
+\label{chap2_simulation_zernike_analysis}
+
+\ref{chap2_simulation_error_response}節では、ミラー加工において生じる様々な誤差を紹介するとともに、その誤差入力についてのシミュレーションを行った。
+本節では、\ref{chap3}章で述べる位相回復によって得られた波面情報から各誤差への分解を行うための解析方法について検討する。
+
+\subsection{Zernike収差}
+
+\subsection{輪帯状の位相分布に対するZernike収差}
+
+
+\subsection{各誤差に起因する収差の解析}
+
+
+
+\section{結論}
+\label{chap2_conclusion}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Local Variables:
+%%% mode: katex
+%%% TeX-master: "../thesis"
+%%% End:

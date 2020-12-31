@@ -10,3 +10,4 @@ build*
 *.mtc*
 *.pdf
 ~\$*.pptx
+__latexindent_temp.tex

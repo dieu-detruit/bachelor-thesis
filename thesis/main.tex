@@ -1,0 +1,107 @@
+\documentclass[12pt]{jsbook}
+\usepackage{style/pethesis}
+\usepackage{amsmath,amssymb,bm}
+%\usepackage{style/subfigure}
+\usepackage{minitoc}
+\usepackage{hhline}
+%\usepackage{slashbox}
+\usepackage{booktabs}
+\usepackage[dvipdfmx]{graphicx} 
+%\usepackage[dvipdfmx,draft]{graphicx} %画像を表示せず枠だけ確保しコンパイル時間減らす
+\usepackage[dvipdfmx, usenames]{color}
+\usepackage{colortbl}
+\usepackage{ascmac}
+\usepackage{lscape}
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{natbib}
+%\renewcommand{\refname}{}
+\usepackage{siunitx}
+
+%\renewcommand{\figurename}{Fig. }
+%\renewcommand{\tablename}{Table }
+\newcommand{\argmax}{\mathop{\rm arg~max}\limits}
+\newcommand{\argmin}{\mathop{\rm arg~min}\limits}
+\usepackage{threeparttable}
+
+\usepackage[subrefformat=parens]{subcaption}
+\captionsetup{compatibility=false}
+%\usepackage{otf}
+
+% ☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆ %
+%                                          論文の表紙の項目
+% ☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆ %
+\thesistype{令和2年度 卒業論文}
+\title{タイコグラフィによる回転体X線結像ミラーの \vspace{2mm}\\ キャラクタリゼーション}
+\etitle{Characterization of Rotation X-ray Imaging Mirror \vspace{2mm}\\ Using Ptychography}
+\affiliation{東京大学 工学部 精密工学科}
+\supervisor{三村 秀和 准教授}
+\studentid{03-190395}
+\author{{\LARGE 渡辺貴史}}
+\begin{document}
+\dominitoc
+%表紙
+\maketitle
+
+%概要
+%\thispagestyle{empty}
+%\input{./abstract/abstract}
+
+\frontmatter
+%目次
+\tableofcontents
+%図目次
+\listoffigures
+%表目次
+%\listoftables
+
+
+
+% ☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆ %
+%                                                 以下本文
+% ☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆ %
+\mainmatter
+\input{./chap1/chap1}
+\input{./chap2/chap2}
+\input{./chap3/chap3}
+\input{./chap4/chap4}
+\input{./chap5/chap5}
+\input{./chap6/chap6}
+
+
+% ☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆ %
+%                                                    付録
+% ☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆ %
+\appendix
+\input{./appendix/appendix}
+%\cleardoublepage
+
+
+% ☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆ %
+%                                                 参考文献
+% ☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆ %
+%\bibliographystyle{junsrt}
+%\bibliography{ref}
+
+
+\chapter*{参考文献}
+\addcontentsline{toc}{chapter}{参考文献}
+\lhead[参考文献]{}
+%\renewcommand{\refname}{引用文献}
+\thispagestyle{empty}
+
+\bibliographystyle{plain}
+\bibliography{references}
+
+\newpage
+
+% ☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆ %
+%                                                    謝辞
+% ☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆ %
+\input{./acknowledgements/acknowledgements}
+\addcontentsline{toc}{chapter}{謝辞} %   /* 目次に謝辞項を追加する */
+
+
+% 論文の最後
+\end{document}
