@@ -12,3 +12,4 @@ out*
 *.pdf
 ~\$*.pptx
 __latexindent_temp.tex
+*.pptx#
