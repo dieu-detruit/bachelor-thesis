@@ -1,5 +1,6 @@
 .DS_Store
 build*
+out*
 .ipynb_checkpoints
 *.aux
 *.fls

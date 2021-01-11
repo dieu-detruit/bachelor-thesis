@@ -40,7 +40,7 @@
 \end{figure}
 
 これらの光学素子のパラメータを表\ref{}に示す。
-なお、NDフィルタは実験によってピークがダイナミックレンジに収まるよう適切に設定がなされるため、そのパラメータ等を記述しない。
+なお、NDフィルタは実験によって適宜ピークがダイナミックレンジに収まるように設定されるため、そのパラメータ等を記述しない。
 
 \begin{table}[h]
 \begin{center}
@@ -54,6 +54,7 @@
   \label{tb:mirror_experiment_params}
 \end{center}
 \end{table}
+
 
 これらを構成した実験装置のCAD図を以下に示す。図\ref{fig:mirror_experiment_asm_cad_side}が横から見た図、図\ref{fig:mirror_experiment_asm_cad_isometric}が俯瞰して見た図である。
 
@@ -82,19 +83,28 @@
 測定対象となっている天文用Wolterミラーは、X線集光用に設計・作製されたものであり、可視光を入射した際にどのような集光波面が生じるかは未検討である。
 特に、可視光はX線に比べ2桁程度波長が長く、回折の影響が顕著であることが大きな差異として存在する。
 \ref{chap4}章での提案手法の検討は、あくまで波面計測の対象である輪帯のみが存在する場合について行われたが、実際にミラーを計測する実験においては測定対象以外の光も通過してCCDカメラの方向に進行する。
-円盤状に広がる平行光を入射した際にミラーより下流に通過する光は、図\ref{}に示す通り4種類存在する。
-図\ref{}①が、測定対象となる波面、つまり正しく放物面、双曲面の順に2回反射した光である。
-これに対して、図\ref{}②の直接通過してCCDカメラに到達する光、図\ref{}③の放物面に当たらず直接双曲面で反射された光、図\ref{}④の開口端のエッジで回折して進行する光が存在する。
+円盤状に広がる平行光を入射した際にミラーより下流に通過する光は、図\ref{fig:mirror_beam_path_types}に示す通り4種類存在する。
 
-\subsection{直接通過光}
+図\ref{fig:mirror_beam_path_types}(a)が、測定対象となる波面、つまり正しく放物面、双曲面の順に2回反射した光である。
+これに対して、図\ref{fig:mirror_beam_path_types}(b)の直接通過してCCDカメラに到達する光、
+図\ref{fig:mirror_beam_path_types}(c)の放物面に当たらず直接双曲面で反射された光、
+図\ref{fig:mirror_beam_path_types}(d)の開口端のエッジで回折して進行する光が存在する。
+
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=10cm]{setup/asm_total_isometric.png}
+\caption{ミラーに入射した光の進路}
+\label{fig:mirror_beam_path_types}
+\end{figure}
+
 直接通過光は、
+\subsection{直接通過光}
+
 
 \subsection{双曲面で1回反射した光}
 
 
-
-
-\subsection{}
+\subsection{上流端エッジでの回折光}
 \label{chap5_}
 
 \clearpage

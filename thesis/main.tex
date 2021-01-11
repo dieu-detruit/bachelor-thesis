@@ -29,9 +29,9 @@
 \captionsetup{compatibility=false}
 %\usepackage{otf}
 
-% ☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆ %
-%                                          論文の表紙の項目
-% ☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆ %
+% ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ %
+%   論文の表紙の項目
+% ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ %
 \thesistype{令和2年度 卒業論文}
 \title{タイコグラフィによる回転体X線結像ミラーの \vspace{2mm}\\ キャラクタリゼーション}
 \etitle{Characterization of Rotation X-ray Imaging Mirror \vspace{2mm}\\ Using Ptychography}
@@ -41,26 +41,24 @@
 \author{{\LARGE 渡辺貴史}}
 \begin{document}
 \dominitoc
-%表紙
+%title
 \maketitle
 
-%概要
+%abstract
 %\thispagestyle{empty}
 %\input{./abstract/abstract}
 
 \frontmatter
-%目次
+%table of contents
 \tableofcontents
-%図目次
+%table of figures
 \listoffigures
-%表目次
+%table of tables
 %\listoftables
 
-
-
-% ☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆ %
-%                                                 以下本文
-% ☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆ %
+% ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ %
+%   Main Body
+% ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ %
 \mainmatter
 \input{./chap1/chap1}
 \input{./chap2/chap2}
@@ -69,39 +67,32 @@
 \input{./chap5/chap5}
 \input{./chap6/chap6}
 
-
-% ☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆ %
-%                                                    付録
-% ☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆ %
+% ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ %
+%   Appendix
+% ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ %
 \appendix
 \input{./appendix/appendix}
 %\cleardoublepage
 
-
-% ☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆ %
-%                                                 参考文献
-% ☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆ %
-%\bibliographystyle{junsrt}
-%\bibliography{ref}
-
-
-\chapter*{参考文献}
-\addcontentsline{toc}{chapter}{参考文献}
-\lhead[参考文献]{}
+% ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ %
+%   References
+% ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ %
+%\chapter*{参考文献}
+%\addcontentsline{toc}{chapter}{参考文献}
+%\lhead[参考文献]{}
 %\renewcommand{\refname}{引用文献}
-%\thispagestyle{empty}
+\thispagestyle{empty}
 
 \bibliographystyle{plain}
 \bibliography{references}
 
 \newpage
 
-% ☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆ %
-%                                                    謝辞
-% ☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆ %
+% ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ %
+%  Acknowledgements
+% ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ %
 \input{./acknowledgements/acknowledgements}
 \addcontentsline{toc}{chapter}{謝辞} %   /* 目次に謝辞項を追加する */
 
-
-% 論文の最後
+% End of Document
 \end{document}
