@@ -7,9 +7,12 @@ fi
 cp main.tex clone.tex
 
 # build
-platex clone.tex
-platex clone.tex 
-dvipdfmx clone
+#platex clone.tex
+#pbibtex references.bib
+#platex clone.tex 
+#platex clone.tex 
+#dvipdfmx clone
+latexmk
 
 # move intermediate files to build dir
 mv clone.* build
