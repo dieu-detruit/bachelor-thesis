@@ -59,20 +59,34 @@
 
 \begin{figure}[!ht]
 \centering
-\includegraphics[width=14cm]{setup/asm_total_side.png}
+\includegraphics[width=14cm]{asm_total_side.png}
 \caption{ミラー測定実験系 側面図}
 \label{fig:mirror_experiment_asm_cad_side}
 \end{figure}
 
 \begin{figure}[!ht]
 \centering
-\includegraphics[width=10cm]{setup/asm_total_isometric.png}
+\includegraphics[width=10cm]{asm_total_isometric.png}
 \caption{ミラー測定実験系 俯瞰図}
 \label{fig:mirror_experiment_asm_cad_isometric}
 \end{figure}
 
 \subsection{ミラーの把持}
-ミラーの把持については、ミラー全長220 mmに対して、ベッセル点で触れるように把持
+回転体ミラーの測定実験系を構成する上で、ミラーの把持は一つの問題となる。
+板型ミラーの場合であれば、反射面以外の平面部を挟むようにして把持することができる。
+一方で円筒型の薄いミラーの場合そのような部分はなく、できるだけ小さな応力で、かつ設置位置に決まった位置に収まるように把持しなければならない。
+そこで、仙波らの方法にならい、Bessel点で触れるように下から把持する機構を採用する。\cite{Senba2010}
+Bessel点は均等荷重を受ける2点支持された梁の重力によるたわみ量が最小となるような点であり、梁の全長$L$に対して、梁の両端から内側に向かって約$0.2203L$(あるいは中心から$\pm 0.2797 L$)の位置として計算される。
+ミラーは光軸上の位置によって半径が異なり厳密には均等荷重ではないが、斜入射が小さくほぼ真円筒とみなせるため、近似的な範囲ではこれで十分であると考えた。
+測定対象のミラー全長220 mmに対してBessel点は中心から約$\pm$61.53 mmであり、これを採用した把持機構は図\ref{fig:mirror_holder_jig}のようになった。
+ミラーと治具の接触点は赤点で示す通りである。
+
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=10cm]{mirror_holder_jig.png}
+\caption{ミラー把持部の設計図}
+\label{fig:mirror_holder_jig}
+\end{figure}
 
 
 \clearpage
@@ -94,7 +108,7 @@
 
 \begin{figure}[!ht]
 \centering
-\includegraphics[width=10cm]{setup/asm_total_isometric.png}
+\includegraphics[width=10cm]{asm_total_isometric.png}
 \caption{ミラーに入射した光の進路}
 \label{fig:mirror_beam_path_types}
 \end{figure}
