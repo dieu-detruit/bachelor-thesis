@@ -1,0 +1,2 @@
+Wavelength: 632.8 [nm]
+HPD: 0.00898926 [nm]

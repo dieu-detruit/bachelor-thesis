@@ -1,0 +1,2 @@
+Energy: 0.3 [keV]
+HPD: 2.33765e-05 [nm]

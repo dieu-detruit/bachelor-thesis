@@ -160,12 +160,90 @@ HPDに並んでビーム集光サイズの評価として用いられるのが�
 \section{計算条件}
 6章で実際に利用する測定対象のミラーについて、誤差応答のシミュレーションを行う。
 
+図\ref{corona_spectrum}は、FOXSI3において撮影されたデータから解析された太陽コロナの活動領域におけるX線スペクトルである。\cite{2019AGUFMSH31C3315V}
+これをもとに考えれば、測定対象となるX線のエネルギーは数百eVから4keV程度であることになる。
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=6cm]{corona_spectrum.png}
+\caption{太陽コロナ活動領域のX線スペクトル}
+\label{fig:corona_spectrum}
+\end{figure}
+
+本章では表\ref{tb:simulation_target_energy}に示すように、太陽コロナの観測の際に測定対象となるX線領域のうち数点、および5章の波面計測実験に用いる可視光ビームの波長を対象にシミュレーションを行う。
+
+\begin{table}[!ht]
+\begin{center}
+  \begin{tabular}{|c|c|} \hline
+    エネルギー & 波長 \\ \hline
+    19.59 eV & 632.8 nm \\
+    300.0 eV & 4.133 nm  \\
+    1.0 keV & 1.240 nm  \\
+    3.0 keV & 0.413 nm  \\ \hline
+  \end{tabular}
+  \caption{シミュレーションで入力する波長・エネルギー}
+  \label{tb:simulation_target_energy}
+\end{center}
+\end{table}
+
 \clearpage
 % ================================================== %
 % section
 % ================================================== %
 \newpage
 
+\section{理想集光}
+
+まず、誤差入力を与える前に、誤差のない理想的なミラー形状に対する集光面強度分布を計算し、その特徴について述べる。
+
+\begin{comment}
+\begin{figure}[!ht]
+\centering
+
+\subfloat[可視光(632.8nm)]{
+    \includegraphics[width=3cm]{ideal/visible_light_focus_abs.png}
+    \label{fig:visible_light_ideal_focus_abs}
+}
+\subfloat[300eV]{
+    \centering
+    \includegraphics[width=3cm]{ideal/300eV_focus_abs.png}
+    \label{fig:300eV_ideal_focus_abs}
+}
+\subfloat[1keV]{
+    \centering
+    \includegraphics[width=3cm]{ideal/1keV_focus_abs.png}
+    \label{fig:1keV_ideal_focus_abs}
+}
+\subfloat[3keV]{
+    \centering
+    \includegraphics[width=3cm]{ideal/3keV_focus_abs.png}
+    \label{fig:3keV_ideal_focus_abs}
+}
+\caption[]{理想的なミラーの各波長に対する集光波面}
+\label{fig:fwhm_explanation}
+\end{figure}
+\end{comment}
+
+表\ref{tb:ideal_focus_evaluation}にそれぞれの波長に対するHPDおよびFWHMを示す。
+理想集光の場合は集光波面が回転対象になっているため、FWHMは任意の横方向の1本のプロファイルに対してのみ示す。
+
+\begin{table}[!ht]
+\begin{center}
+  \begin{tabular}{|c|c|c|c|c|} \hline
+    項目 & 可視光(632.8nm) & 300eV & 1keV & 3keV \\ \hline
+    HPD & 8.989 mm & \SI{23.38}{\micro \metre} & \SI{20.37}{\micro \metre} & \SI{19.45}{\micro \metre} \\
+    FWHM & \SI{19.53}{\micro \metre} & \SI{0}{\micro \metre} & \SI{0}{\micro \metre} & \SI{0}{\micro \metre} \\ \hline
+  \end{tabular}
+  \caption{理想集光の場合のHPDおよびFWHM}
+  \label{tb:ideal_focus_evaluation}
+\end{center}
+\end{table}
+
+\clearpage
+% ================================================== %
+% section
+% ================================================== %
+\newpage
 
 \section{各誤差入力に対するシミュレーション}
 \label{chap2_simulation_error_response}
