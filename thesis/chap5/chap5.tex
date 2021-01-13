@@ -107,6 +107,31 @@ Bessel点は均等荷重を受ける2点支持された梁の重力によるた�
 \label{fig:mirror_holder_jig}
 \end{figure}
 
+\subsection{ピンホールの設計}
+
+ピンホールの設計は図\ref{fig:mirror_pinhole_arrangement}に示す通りである。
+断りとして、以下の設計が2つの誤謬を孕んでいることを述べておく。
+1つは、ピンホール中心が移動する円の直径はちょうど計測する輪帯状波面のちょうど半分の直径とするのが自然だが、そのような直径を持つ円に対して1つのピンホールが対応する角度を先に決めて、その角度を持つ扇形の弦が直径となるように円を定めている。
+もう1つは、シミュレーション上で回復ができると判断した半径2.25 mmの円に対して、直径2.25 mmとしてしまったことである。
+これによって、上の計算にはもはや意味を失っている。
+ただ、測定対象の輪帯がピンホール通過領域に収まれば問題はなく、直径の決め方は些細な問題である。
+
+\begin{figure}[!ht]
+\centering
+
+\subfloat[ピンホールの設計]{
+    \includegraphics[width=7cm]{pinhole_arrangement.png}
+    \label{fig:mirror_pinhole_arrangement}
+}
+\subfloat[回転半径の決め方]{
+    \centering
+    \includegraphics[width=6cm]{pinhole_arrangement_policy.png}
+    \label{fig:mirror_pinhole_arrangement_policy}
+}
+\caption[]{ピンホールの設計}
+\label{fig:pinhole_arrangement_pictures}
+\end{figure}
+
 
 \clearpage
 % ================================================== %
