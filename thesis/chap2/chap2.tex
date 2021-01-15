@@ -80,7 +80,7 @@ Strehl比による比較検討では「回折限界集光をしているか」�
 
 あるHPDを持つようなのふたつの結像点を分離できるような限界の配置が図\ref{fig:hpd_resolution_limit}のときであるとするならば、1秒角分解能という達成目標は図\ref{fig:hpd_arcsecond}が示すようなHPDで言い換えることができる。
 つまり、ミラー上流端中心から半径を見込む角度がちょうど1秒角となるようなHPDが達成目標となる。
-具体的には、ミラー上流端開口から焦点面までの距離が
+具体的には、ミラー上流端開口から焦点面までの距離2.1025 mに対してHPDは\SI{10.19}{\micro \metre}と計算される。
 HPDを指標とした評価では、これを基準とする。
 
 \begin{figure}[ht]
@@ -104,11 +104,14 @@ HPDを指標とした評価では、これを基準とする。
 HPDに並んでビーム集光サイズの評価として用いられるのが、FWHM(Full Width Half Maximum)である。
 こちらは焦点面を集光点を通る直線によって切断したプロファイルに対して、「焦点面における最大値の半分の値を取る2点の距離」と定められる。
 図\ref{fig:fwhm_explanation_profile}は1つのプロファイルに対するFWHMの例である。
-切断する直線には任意性があるため、通常は図\ref{fig:fwhm_explanation}のように水平方向と鉛直方向の切断しこれを評価する。
+切断する直線には任意性があるため、通常は図\ref{fig:fwhm_explanation}のように水平方向と鉛直方向の2方向に関して切断しこれを評価する。
+\ref{chap2_ideal_focusing}節で具体的な計算例を示すが、結像性能の強いWolterミラーはメインピークに対して比較的大きいサブピークが細かく連なるような集光面強度分布を持つ。
+そのため、強度はメインピークより外側に広がって存在しており、解像限界を決める上ではHPDの方が適していると言える。
+FWHMはミラー開発の目標に対する評価ではなく、本研究中でのパラメータ設定の指標として用いることとする。
 
 \begin{figure}[ht]
 \centering
-\includegraphics[width=10cm]{FWHM.png}
+\includegraphics[width=8cm]{FWHM.png}
 \caption{FWHMの例}
 \label{fig:fwhm_explanation_profile}
 \end{figure}
@@ -117,12 +120,12 @@ HPDに並んでビーム集光サイズの評価として用いられるのが�
 \centering
 
 \subfloat[horizontal]{
-    \includegraphics[width=6cm]{FWHM_horizontal.png}
+    \includegraphics[width=5cm]{FWHM_horizontal.png}
     \label{fig:fwhm_explanation_horizontal}
 }
 \subfloat[vertical]{
     \centering
-    \includegraphics[width=6cm]{FWHM_vertical.png}
+    \includegraphics[width=5cm]{FWHM_vertical.png}
     \label{fig:fwhm_explanation_vertical}
 }
 \caption[]{切断の例 水平:\subref{fig:fwhm_explanation_horizontal}, 鉛直:\subref{fig:fwhm_explanation_vertical}}
@@ -140,8 +143,8 @@ HPDに並んでビーム集光サイズの評価として用いられるのが�
 \label{chap2_wolter_diffraction_apporoximation}
 本節では、本研究で測定対象とするWolterミラーの系において適用するべき波動場伝播の近似公式について説明する。
 光学波動場の伝播に関しての詳細は付録において解説する。
-まず、1章\ref{chap1_wolter_arrangement}節で示したパラメータについて、Fresnel回折近似が成り立つことを確認する。
-Fresnel回折近似が成り立つための条件は、近似で切り捨てる微小項が1 radより十分小さいときであり、これは式\ref{eqn:fresnel_approximation_conditon}で表される。
+まず、1章\ref{chap1_wolter_arrangement}節で示したパラメータについて、Fresnel回折近似の成立条件が成り立っているかどうかを確認する。
+Fresnel回折近似が成り立つための条件は、近似で切り捨てる微小項が1 radより十分小さいときであり、これは式\ref{eqn:fresnel_approximation_condition}で表される。
 ただし$z$は伝搬距離、$\lambda$は波長、$(x, y), (\xi, \eta)$は実空間および逆空間の座標を表す。
 
 \begin{equation}
@@ -149,7 +152,70 @@ Fresnel回折近似が成り立つための条件は、近似で切り捨てる�
     \frac{\pi}{4\lambda} \max \left\{ (x-\xi)^2 + (y-\eta)^2 \right\}^2 / z^3 \ll 1
 \end{equation}
 
-パラメータを代入して確認すると、$\text{(左辺)=}$
+焦点面を3章\ref{chap3_dynamic_range}節に示したCCDカメラのサイズとして取りこれを計算すると、(左辺)の値は1.645 radとなった。
+これは十分小さいとは言えず、Fresnel回折近似を満たしているとは言えない。
+しかし、Fresnel回折近似を満たしていない場合でも、計算を進めていく上でそれがほとんど影響を及ぼさない場合がある。
+位相回復計算においては数万回の伝搬計算を行うため、1回のコストは最小限であることが好ましい。
+そこで、厳密計算であるRayleigh-Sommerfeld回折積分とFresnel回折積分近似の集光面強度分布を比較し、実用上の問題が存在するかどうかを検討する。
+まず、表\ref{tb:check_approximation_validity_1}に示すような適当な分割で回折積分を実行し、集光波面分布におけるメインピークのFWHMを調べる。
+
+\begin{table}[!ht]
+\begin{center}
+  \begin{tabular}{|c|c|} \hline
+    項目 & 値 \\ \hline
+    波長 & 632.8 nm \\
+    画素数 & $2048 \times 2048$ \\
+    焦点面ピクセルサイズ & \SI{5.0}{\micro \metre} \\ \hline
+  \end{tabular}
+  \caption{Fresnel回折近似適用可能性の検討1}
+  \label{tb:check_approximation_validity_1}
+\end{center}
+\end{table}
+
+計算の結果、プロファイルは図\ref{fig:fwhm_approximation}のようになった。
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=8cm]{fwhm_approximation.png}
+\caption{回折積分計算による簡易的な計算で得られた焦点面強度プロファイル}
+\label{fig:fwhm_approximation}
+\end{figure}
+
+ここから計算されるFWHMは4ピクセル分の\SI{20}{\micro \metre}であった。
+これを踏まえ、メインピークを十分な分割数で観察できるよう焦点面ピクセルサイズが\SI{1}{\micro \metre}になるような表\ref{tb:check_approximation_validity_2}のパラメータで回折積分およびFresnel回折近似を用いた場合の集光面強度プロファイルを計算し、比較を行う。
+
+\begin{table}[!ht]
+\begin{center}
+  \begin{tabular}{|c|c|} \hline
+    項目 & 値 \\ \hline
+    波長 & 632.8 nm \\
+    画素数 & $4096 \times 4096$ \\
+    焦点面ピクセルサイズ & \SI{1.0}{\micro \metre} \\ \hline
+  \end{tabular}
+  \caption{Fresnel回折近似適用可能性の検討2}
+  \label{tb:check_approximation_validity_2}
+\end{center}
+\end{table}
+
+
+
+\begin{figure}[!ht]
+\centering
+
+\subfloat[Rayleigh-Sommerfeld回折積分とFresnel回折積分の比較]{
+    \includegraphics[width=8cm]{diffraction_comparison_profile.png}
+    \label{fig:diffraction_comparison_profile}
+}
+\subfloat[Rayleigh-Sommerfeld回折積分とFresnel回折積分の差分値]{
+    \centering
+    \includegraphics[width=8cm]{diffraction_comparison_diff.png}
+    \label{fig:diffraction_comparison_diff}
+}
+\caption[]{焦点面強度分布の水平方向プロファイル}
+\label{fig:fwhm_explanation}
+\end{figure}
+
+
 
 \clearpage
 % ================================================== %
@@ -162,7 +228,7 @@ $\sin$関数などの周期関数は、逆関数の値域が周期以下の大�
 複素波動場の位相分布についても同様である。
 $\exp(i\phi)$は周期$2\pi$の関数であり、逆関数は$\arg\{\exp(i\phi)\}=\phi \mod{2\pi}$と位相の$\mod{2\pi}$での剰余を返す。
 故に、位相分布が本来なめらかな関数として与えられたとしても、それが$2\pi$を超えるような範囲に渡って分布する際には必ずどこかで不連続に位相が飛んでしまう。
-例えば、$y = f(x) = 4 x + \sin(x) - 2 \sin(2 x) - 4 \sin(10 x) \quad (x \in [0, 1])$に対して$z = \arg\{\exp(iy)\}$を取ると、図\ref{fig:wrapped_graph_example}のようになる。
+例えば、$y = f(x) = 10x + 20x^2 \quad (x \in [0, 1])$に対して$z = \arg\{\exp(iy)\}$を取ると、図\ref{fig:wrapped_graph_example}のようになる。
 
 \begin{figure}[ht]
 \centering
@@ -172,23 +238,28 @@ $\exp(i\phi)$は周期$2\pi$の関数であり、逆関数は$\arg\{\exp(i\phi)\
 \end{figure}
 
 これに対して、離散化された領域において1ピクセルで$2\pi$以上のジャンプはないものと仮定して順番に接続を行うことで、なめらかな位相分布を取り戻すことができる。
-これを位相接続あるいは位相アンラップといい、1次元の場合の最もシンプルなアルゴリズムは離散列$y[n] = f(x[n])$および$z[n]=\arg\{\exp(iy[n])\}$に対してAlgorithm \ref{alg:unwrap_1d}のようになる。
+これを位相接続あるいは位相アンラップといい、1次元の離散列$y[n] = f(x[n])$および$z[n]=\arg\{\exp(iy[n])\}$に対して最もシンプルなアルゴリズムはAlgorithm \ref{alg:unwrap_1d}のようになる。
+連続した位置を走査していき、1つ前のピクセルと$\pi$以上の位相差が生じたらそれ以降の点全てに$2\pi$を足し引きし、位相を接続する。
 
 \begin{algorithm}                      
 \caption{1次元アンラップの例}         
 \label{alg:unwrap_1d}                          
 \begin{algorithmic}
-    \FOR{n = 1 \ldots N-1}
-        \STATE $z[n] \leftarrow z[i] + \begin{cases}
-           -2 \pi & (z[n] + \pi < z[n]) \\
-           0 & (z[n] - \pi \leq z[n] \leq z[n] + \pi) \\
-           2 \pi & (z[n] < z[n] - \pi)
-        \end{cases}$
+    \FOR{$n = 1 \ldots N-1$}
+        \STATE $\delta = \begin{cases}
+                -2 \pi & (z[n] + \pi < z[n]) \\
+                0 & (z[n] - \pi \leq z[n] \leq z[n] + \pi) \\
+                2 \pi & (z[n] < z[n] - \pi)
+            \end{cases}$
+        \FOR{$k = n \ldots N-1$}
+            \STATE $z[k] \leftarrow z[k] + \delta$
+        \ENDFOR
     \ENDFOR
 \end{algorithmic}
 \end{algorithm}
 
-2次元のリング状の領域に対しても同様に行うことができ、接続するべき2次元位相分布内においてピクセルの走査順序を決めれば、1次元の場合と同じアルゴリズムで接続を行うことができる。
+2次元のリング状の領域に対しても同様に行うことができ、接続するべき2次元位相分布内において走査する1本の順序を決めれば、1次元の場合と同じアルゴリズムで接続を行うことができる。
+本研究では、輪帯を内側から外側に向かって回転しながら進んでいくような走査順序を考え、それについてAlgorithm \ref{alg:unwrap_1d}を適用する。
 ミラー波面計測においては、経験的に十分な空間分解能があれば$2\pi$以上のジャンプはないと考えてよいとされており、本研究でも同様にその仮定をおいて測定を行う。
 
 \clearpage
@@ -245,6 +316,7 @@ $\exp(i\phi)$は周期$2\pi$の関数であり、逆関数は$\arg\{\exp(i\phi)\
 \newpage
 
 \section{理想集光}
+\label{chap2_ideal_focusing}
 
 まず、誤差入力を与える前に、誤差のない理想的なミラー形状に対する集光面強度分布を計算し、その特徴について述べる。
 
