@@ -13,3 +13,4 @@ out*
 ~\$*.pptx
 __latexindent_temp.tex
 *.pptx#
+*.intensity
