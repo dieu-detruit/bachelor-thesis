@@ -197,24 +197,29 @@ Fresnel回折近似が成り立つための条件は、近似で切り捨てる�
 \end{center}
 \end{table}
 
-
+計算の結果、プロファイルは図\ref{fig:diffraction_comparison_comparison}のようになった。
+また、2つのプロファイルの差分を取って回折積分の最大値で規格化したグラフが図\ref{fig:diffraction_comparison_normalized_diff}である。
 
 \begin{figure}[!ht]
 \centering
 
-\subfloat[Rayleigh-Sommerfeld回折積分とFresnel回折積分の比較]{
-    \includegraphics[width=8cm]{diffraction_comparison_profile.png}
+\subfloat[プロファイルプロット]{
+    \includegraphics[width=6cm]{diffraction_comparison_profile.png}
     \label{fig:diffraction_comparison_profile}
 }
-\subfloat[Rayleigh-Sommerfeld回折積分とFresnel回折積分の差分値]{
+\subfloat[規格化されたプロファイル誤差]{
     \centering
-    \includegraphics[width=8cm]{diffraction_comparison_diff.png}
-    \label{fig:diffraction_comparison_diff}
+    \includegraphics[width=6cm]{diffraction_comparison_normalized_diff.png}
+    \label{fig:diffraction_comparison_normalized_diff}
 }
-\caption[]{焦点面強度分布の水平方向プロファイル}
-\label{fig:fwhm_explanation}
+
+\caption[]{Rayleigh-Sommerfeld回折積分とFresnel回折積分のプロファイル比較}
+\label{fig:diffraction_comparison}
 \end{figure}
 
+差分の絶対値の最大値は0.00242程度となった。
+これは十分小さく、実際の計測で生じうるノイズと同程度以下であるため、シミュレーションでの検討および位相回復計算を行う上で致命的な問題をもたらさない。
+ゆえに、以降の伝搬計算はFresnel回折近似を用いて行う。
 
 
 \clearpage
