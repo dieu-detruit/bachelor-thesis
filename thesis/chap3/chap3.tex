@@ -51,17 +51,13 @@
     製品名 & Bitran BQ-85M \\
     ピクセルサイズ & 9.0 um \\
     画素 & 4096 $\times$ 4096 \\
-    受光面積 & 36.8 mm $\times$ 36.8 mm \\
+    受光面積 & 36.9 mm $\times$ 36.9 mm \\
     A/Dコンバータ & 16bit (65535階調) \\ \hline
   \end{tabular}
   \caption{CCDカメラのパラメータ}
   \label{tb:ccd_camera_params}
 \end{center}
 \end{table}
-
-また、実際の撮影時にはノイズが混入するため、ダイナミックレンジはカメラ自体の値より小さくなる。
-以下は10回のダークフレーム撮影結果である。
-
 
 \clearpage
 \newpage
@@ -74,31 +70,51 @@
 \label{chap3_phase_retrieval_introduction}
 
 1章\ref{chap1_wave_metrics}でも述べた通り、位相回復法は波面計測法の一種であり、CCDなどの受光素子で計測された強度値の情報から位相分布を算出する方法である。
-より具体的には、測定対象の波面の存在する領域について、$N \times N$の強度計測値を元に$N \times N$の位相を求める、位相回復問題を解く。
+より具体的には、測定対象の波面の存在する領域について、$N \times N$の強度計測値を元に$N \times N$の位相を求める。
 位相回復法には様々な手法が存在するが、いずれの方法においても基本的な方針は共通している。
-未知数となっている位相をすべて決定するためには、それら未知数を含む十分本数の方程式を立式する必要があるが、一般に、求める光学波動場において強度と位相の間に拘束関係はない。
+未知数となっている位相をすべて決定するためには、それら未知数を含む十分な本数の方程式を立式する必要がある。一般に、求める光学波動場において強度と位相の間に拘束関係はない。
 そこで、測定対象の波面領域に加えて光の進行方向にもう1つ未知の波面領域を定め、これら2つの領域間での光学波動場の伝播を関係式として与えることで、求める未知数を含む方程式を得ることができる。
 これを図\ref{fig:phase_retrieval_policy}に示す。
 波動場の伝播は$N \times N$の離散領域に対して$N \times N$本の数式で表される。
 これだけでは未知数が$3N \times N$個に対して方程式が$N \times N$本と少なく、未知数を全て決定することができない。
-そこで、未知数を減らす、もしくは関係式を増やすといった工夫を行うことで、解を決定するという方針を取る。
+そこで、未知数を減らす、もしくは成立する方程式を増やすといった工夫を行うことで、解を決定するという方針を取る。
 
 \begin{figure}[!ht]
 \centering
-\includegraphics[width=11cm]{phase_retrieval_problem.png}
+\includegraphics[width=6cm]{phase_retrieval_problem.png}
 \caption{位相回復問題}
 \label{fig:phase_retrieval_problem}
 \end{figure}
 
 \begin{figure}[!ht]
 \centering
-\includegraphics[width=13cm]{phase_retrieval_policy.png}
+\includegraphics[width=12cm]{phase_retrieval_policy.png}
 \caption{位相回復法の方針}
 \label{fig:phase_retrieval_policy}
 \end{figure}
 
-以下では、代表的な解法を紹介し、続いてそれらを用いた天文用Wolterミラーの波面に対する位相回復法の検討・シミュレーションを行う。
+\clearpage
+\newpage
 
+% ================================================== %
+% section
+% ================================================== %
+
+\section{サンプリング定理}
+\label{chap3_sampling_theorem}
+
+ある2つの平面の間で光波の伝播が起こるとき、この2つの領域が遠方である場合あるいは光波が伝播先で収束するような場合には、その伝播はフーリエ変換の関係によって与えられる。(ref hoge)
+つまり、二平面はそれぞれもう一方の周波数領域(波数領域)での表現になっており、カメラで取得される離散領域に対して適用し離散フーリエ変換を行うとき、サンプリング定理によって互いに領域サイズは拘束関係にある。
+逆空間の領域はナイキスト周波数$k_s$に対して$[-k_s, k_s]^2$として与えられるので、これを実空間、逆空間の空間分解能に対して表すと、式\ref{eqn:sampling_theorem_px},\ref{eqn:sampling_theorem_size}のようになる。
+ただし、波長を$\lambda$、焦点距離を$f$とし、領域の1画素の一辺を$\Delta L_r, \Delta L_f$、領域全体の一辺を$L_r=N \Delta L_r, L_f = N \Delta L_f$とする。
+
+\begin{eqnarray}
+  \Delta L_{\mathrm{real}} \Delta L_{\mathrm{reciprocal}} = \frac{f  \lambda}{N} \label{eqn:sampling_theorem_px} \\
+  \Leftrightarrow 
+  L_{\mathrm{real}} L_{\mathrm{reciprocal}} = N f \lambda \label{eqn:sampling_theorem_size}
+\end{eqnarray}
+
+これは、ミラー下流端面における空間分解能が高い波面領域を取ることは、焦点面において広い波面領域を取ることと等価である。
 
 \clearpage
 % ================================================== %
@@ -120,7 +136,7 @@ CDIとは、図\ref{fig:cdi_schematic}に示すように、サンプルに集光
 
 位相回復法によってディテクターでの位相およびサンプル面における位相・強度を求めることで、サンプル各点における透過率を求めることが目標となる。
 このような系においては、カメラの画素をより細かく取ることにより、対応するサンプル面での領域がサンプルより大きく広がるため、この領域には波面が存在しないという仮定を用いて回復計算を行うことができる。
-本研究で対象とするWolterミラーについても、回復の対象である輪帯状でかつ細い波面の面積が下流端開口面全体に対して非常に小さく、同様の方法が有効である可能性がある。
+Wolterミラーの計測に用いる場合は、焦点面にCCDカメラを配置し、ミラーの輪帯に対して孤立条件を適用することになる。
 この方針に則って、位相回復計算を行う最もシンプルなアルゴリズムがBIO(Basic Input-Output) Algorithmである。
 疑似コードをAlgorithm\ref{alg:bio}に示す。
 
@@ -183,6 +199,16 @@ CDIとは、図\ref{fig:cdi_schematic}に示すように、サンプルに集光
 位相回復計算が収束するために必要な最低限の条件として、FFTで結ばれる関係式の数が未知数の数を上回らなければならない。
 Friedel則による対称性などを考慮すると、取得する総ピクセル数が回復する試料のピクセル数の2倍になっていなければいけないことになる。\cite{Latychevskaia2018}
 実際にはノイズが乗ったり、直接通過する光が入射しないようにビームストップを配置したりといった事情から、2倍より大きくなければならない。
+
+ミラーに適用する際には、図\ref{fig:solitude_schematic}のように焦点面にCCDカメラを配置し、下流端面の輪帯が正方形状の領域に対して疎であることを利用して計算を行う。
+
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=12cm]{solitude_schematic_for_wolter.png}
+\caption{Wolterミラー下流端面の孤立条件を用いる方法}
+\label{fig:solitude_schematic}
+\end{figure}
+
 
 \clearpage
 % ================================================== %
@@ -327,10 +353,6 @@ rPIEのアルゴリズムをAlgorithm\ref{alg:rpie}に示す。
 ステップが小さいほどオーバーサンプリング比は大きく収束性は高くなるが、その分必要な領域を走査し終えるのに必要な計測時間は増大してしまう。
 Bunkらの検討によれば、オーバーサンプリング比が0.6程度が最適であるということが知られている。\cite{Bunk2008}
 
-\subsection{Wolterミラー計測への適用}
-Wolterミラー計測
-ピンホールをオブジェクトとして用いるタイコグラフィ法でシミュレーションを行う。
-
 \clearpage
 % ================================================== %
 % section
@@ -338,6 +360,7 @@ Wolterミラー計測
 \newpage
 
 \section{ディテクター走査による冗長性}
+\label{chap3_detector_scanninc_introduction}
 
 タイコグラフィ法ではオブジェクトを走査することで冗長性を確保したが、ディテクターを走査することで冗長性を確保する方法も知られている。
 
@@ -348,6 +371,8 @@ Wolterミラー計測
 \label{fig:detector_scanning_schematic}
 \end{figure}
 
+下流端面から各ディテクター走査位置までの伝播計算は、焦点面までFresnel回折伝播、そこからさらに角スペクトル法でディテクター走査距離ぶんの伝播をするという2段階の構成で行われる。
+タイコグラフィ法同様、各面に伝播するごとに強度を計測強度値と置き換える拘束を掛けることを繰り返し位相分布を回復する。
 
 \clearpage
 % ================================================== %
@@ -356,6 +381,7 @@ Wolterミラー計測
 \newpage
 
 \section{下流端開口走査による冗長性}
+\label{chap3_transverse_introduction}
 
 オブジェクトを走査する位置を焦点面ではなく集光素子の開口直後とするTransverse Translation法がBradyらによって提案されている。\cite{Brady2009}
 これは図\ref{fig:transverse_schematic}に示すように、焦点面を操作するタイコグラフィ法同様にオブジェクトを集光素子の開口で走査し、その回折像を下流側のカメラで撮影するという方法である。
@@ -367,16 +393,109 @@ Wolterミラー計測
 \label{fig:transverse_schematic}
 \end{figure}
 
-計算アルゴリズム自体は基本的にはタイコグラフィ法と同様にすればよい。
-タイコグラフィ法と構成が異なるため、同じ装置・素子に対して計算条件や分解能が異なる。
-
-\subsection{対称性}
+輪帯はほぼ真円状になっているため、走査には回転ステージが有効である。
+計算アルゴリズム自体は基本的にはタイコグラフィ法と同様にすればよく、特にピンホール形状の曲率誤差が問題にならない場合はピンホールは既知の円形状として与え、PIEのアルゴリズムを流用すればよい。
 
 \clearpage
 % ================================================== %
 % section
 % ================================================== %
 \newpage
+
+\section{手法の比較・決定}
+
+\subsection{分解能に関する検討}
+\label{chap3_comparison_resolution}
+
+計測によって得られる下流端面の空間分解能を比較する上で最も重要なのは、位相回復計算の対象となる2つの平面がどこに設定されているかということである。
+この観点で比較すると、上に挙げた4つの手法は孤立条件(\ref{chap3_solitude_introduction}節)、ディテクター走査(\ref{chap3_detector_scanninc_introduction}節)、下流端面走査(\ref{chap3_transverse_introduction})の3つと焦点面走査(\ref{chap3_ptychography_introduction})の2種類に大別される。
+前者は下流端面と焦点面(近傍)におかれたCCD面、後者は焦点面に置かれたオブジェクト平面とそれよりさらに下流にあるCCDカメラの受光面が回復計算の対象となる。
+\ref{chap3_sampling_theorem}節で述べたサンプリング定理に基づいて考えると、下流端面の空間分解能が高いことは焦点面における回復領域が大きいことに対応する。
+前者の方法では、焦点面の回復領域の大きさはCCDカメラの受光面の大きさによって決まる。
+\ref{chap3_dynamic_range}節に示したCCDを利用し、CCD全面に渡って回復計算を行うことができたとすれば、下流端面の1画素の一辺は\SI{32.66}{\micro \metre}であり、輪帯を動径方向に11.13ピクセルの分解能で計測できる。
+一方で、後者の方法では焦点面の回復領域の大きさは走査面積によって決まり、その走査全体で必要となる撮影回数はCCDカメラの画素サイズによって決まる。
+一方で焦点面走査の場合、1枚の画像に対応して回復される領域サイズはビームの焦点強度分布においてメインローブの数倍から10倍程度であり、前者と同じ36.9 mmの領域を回復するためには、10万枚オーダーの撮影が必要になる。
+1枚の撮影に数秒程度かかるとすればこれは計測時間が現実的なものではなく、今回のWolterミラー計測には適さない。
+
+\subsection{ダイナミックレンジに関する検討}
+\label{chap3_comparison_dynamic_range}
+
+続いて、焦点面にCCDカメラを配置する残り3つの手法について、ダイナミックレンジに関する検討を行う。
+図\ref{fig:single_pinhole_mask}のように下流端面に$\Phi 4.5$ mmのピンホールを入れた場合、およびオブジェクトを何も挿入せず焦点面に光を集めた場合について、その集光面強度分布を図\ref{fig:comparison_focus_pinhole_existence}に示す。
+また、水平方向プロファイルを強度ピークで規格化して比較したものが図\ref{fig:transverse_dynamic_range_speriority}である。
+全面照明の場合は集光点付近に強度分布が集中しているのに対して、ピンホールを挿入すると広範囲に渡って分布していることが分かる。
+このことから、ピンホールを挿入する方が、ダイナミックレンジに対応して有効領域が狭まるということが起きにくく、より安定した回復計算の収束が期待できる。
+
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=4cm]{single_pinhole_masked_ring.png}
+\caption{下流端面でのピンホールの模式図}
+\label{fig:single_pinhole_mask}
+\end{figure}
+
+
+\begin{figure}[!ht]
+\centering
+
+\subfloat[オブジェクトがない場合]{
+    \includegraphics[width=6cm]{full_field_focus.png}
+    \label{fig:full_field_focus}
+}
+\subfloat[$\Phi 4.5$ mmのピンホールを挿入した場合]{
+    \centering
+    \includegraphics[width=6cm]{single_pinhole_focus.png}
+    \label{fig:single_pinhole_focus}
+}
+
+\caption[]{ピンホールの有無による焦点面強度分布の比較}
+\label{fig:comparison_focus_pinhole_existence}
+\end{figure}
+
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=14cm]{pinhole_dynamic_range_superiority.png}
+\caption{ピンホールの有無による焦点面強度プロファイルの比較}
+\label{fig:transverse_dynamic_range_superiority}
+\end{figure}
+
+\subsection{手法の選択}
+\label{chap3_decision_of_method}
+空間分解能に関する議論、およびダイナミックレンジに関する議論から、\ref{chap3_transverse_introduction}節の下流端に挿入したオブジェクトを走査する方法が最も安定して高い空間分解能での測定を実現すると結論づけ、これを測定手法として採用する。
+
+\clearpage
+% ================================================== %
+% section
+% ================================================== %
+\newpage
+
+\section{下流端開口面を走査する位相回復法の構成検討}
+\label{chap3_transverse_arrangement}
+
+下流端開口面を走査する方法について、その構成を検討する。
+\ref{chap3_comparison_dynamic_range}節で図\ref{fig:single_pinhole_focus}に示したように、ピンホールを挿入した際の理想的な輪帯に対して焦点面の強度分布は対称になっている。
+つまり、輪帯上の半周ずれた点にピンホールを置いた場合と焦点面強度分布が変わらないため、焦点面における拘束が波面を解に近づけるとは限らない。
+実際、\ref{fig:single_pinhole_mask}の構成において位相回復計算シミュレーションを行ったが、波面は正しく回復されなかった。
+これを解決するためには、撮影像の対称性を崩す必要がある。
+Bradyらの計測においては、焦点面よりも下流側にCCDカメラを配置することで対称性を崩している。\cite{Brady2009}
+例えば500 mm下流側における強度分布を角スペクトル法で計算すると図\ref{}
+
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=6cm]{single_pinhole_defocus.png}
+\caption{焦点面から500 mm下流側での強度分布}
+\label{fig:single_pinhole_defocus}
+\end{figure}
+
+
+
+
+
+\clearpage
+% ================================================== %
+% section
+% ================================================== %
+\newpage
+
 
 
 \section{結論}
