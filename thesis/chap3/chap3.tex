@@ -324,7 +324,7 @@ rPIEはほとんどePIEの一般化になっている。
 
 rPIEのアルゴリズムをAlgorithm\ref{alg:rpie}に示す。
 
-\begin{algorithm}                      
+\begin{algorithm}[!ht]
 \caption{rPIE Algorithm}         
 \label{alg:rpie}                          
 \begin{algorithmic}
@@ -468,16 +468,15 @@ Bunkらの検討によれば、オーバーサンプリング比が0.6程度が�
 % ================================================== %
 \newpage
 
-\section{下流端開口面を走査する位相回復法の構成検討}
+\section{手法の提案}
 \label{chap3_transverse_arrangement}
 
 下流端開口面を走査する方法について、その構成を検討する。
 \ref{chap3_comparison_dynamic_range}節で図\ref{fig:single_pinhole_focus}に示したように、ピンホールを挿入した際の理想的な輪帯に対して焦点面の強度分布は対称になっている。
 つまり、輪帯上の半周ずれた点にピンホールを置いた場合と焦点面強度分布が変わらないため、焦点面における拘束が波面を解に近づけるとは限らない。
 実際、\ref{fig:single_pinhole_mask}の構成において位相回復計算シミュレーションを行ったが、波面は正しく回復されなかった。
-これを解決するためには、撮影像の対称性を崩す必要がある。
-Bradyらの計測においては、焦点面よりも下流側にCCDカメラを配置することで対称性を崩している。\cite{Brady2009}
-例えば500 mm下流側における強度分布を角スペクトル法で計算すると図\ref{}
+Bradyらの計測においては、焦点面よりも下流側にCCDカメラを配置することで非対称化を図っている。\cite{Brady2009}
+例として、500 mm下流側における強度分布を角スペクトル法で計算すると図\ref{fig:single_pinhole_defocus}のようにデフォーカスし、対称性が崩れる。
 
 \begin{figure}[!ht]
 \centering
@@ -486,8 +485,40 @@ Bradyらの計測においては、焦点面よりも下流側にCCDカメラを
 \label{fig:single_pinhole_defocus}
 \end{figure}
 
+この方法の欠点として、焦点位置を調整したあとに移動を行うために位置決め精度が必要であること、回復計算ごとに線状畳み込みが必要な角スペクトル法での計算が必要となり計算時間が大きくなってしまうことが挙げられる。
+
+\subsection{不等間隔複数ピンホールによる非対称化}
+デフォーカスを用いない方法として、ピンホールを複数配置することで非対称性をもたせるという手法を提案する。
+ピンホール2つでは、ピンホールが2つの場合と状況が変わらず、位相を回復することができない。
+ピンホール2つを対称に配置し、さらにそこから角度をずらした位置にピンホールを配置することにより、非対称性を生み出すことができる。
+図\ref{fig:three_pinhole_mask}はその一例として、対称な位置に2つとそこから45度ずれた位置にピンホールを挿入した場合について示した。
+
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=6cm]{three_pinhole_mask.png}
+\caption{不等間隔ピンホールの例}
+\label{fig:three_pinhole_mask}
+\end{figure}
+
+このようにピンホールを配置すると、焦点面における強度分布は図\ref{fig:three_pinhole_focus}のようになる。
+
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=6cm]{three_pinhole_focus.png}
+\caption{不等間隔ピンホールの例}
+\label{fig:three_pinhole_focus}
+\end{figure}
 
 
+\clearpage
+% ================================================== %
+% section
+% ================================================== %
+\newpage
+
+\section{シミュレーション}
+\label{chap3_transverse_simulation}
+シミュレーションを行った。
 
 
 \clearpage
@@ -501,8 +532,6 @@ Bradyらの計測においては、焦点面よりも下流側にCCDカメラを
 \section{結論}
 \label{chap3_conclusion}
 結論を述べる。
-
-
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
