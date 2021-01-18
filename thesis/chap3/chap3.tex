@@ -518,7 +518,140 @@ Bradyらの計測においては、焦点面よりも下流側にCCDカメラを
 
 \section{提案手法に関するシミュレーション}
 \label{chap3_transverse_simulation}
-シミュレーションを行った。
+
+本節では、まず位相回復計算およびシミュレーションに必要な光学波動場の伝播計算、および位相回復結果の解析に必要となる位相接続について述べた上で、提案手法についてシミュレーションを行い、その結果を示す。
+
+\subsection{Wolterミラーにおける光学波動場の伝播}
+\label{chap3_wolter_diffraction_apporoximation}
+シミュレーションおよび位相回復計算を行うにあたり、測定対象のWolterミラーの光学系において適用するべき波動場伝播の近似公式について検討する。
+光学波動場の伝播に関しての詳細は付録において解説する。
+まず、1章\ref{chap1_wolter_arrangement}節で示したパラメータについて、Fresnel回折近似の成立条件が成り立っているかどうかを確認する。
+Fresnel回折近似が成り立つための条件は、近似で切り捨てる微小項が1 radより十分小さいときであり、これは式\ref{eqn:fresnel_approximation_condition}で表される。
+ただし$z$は伝搬距離、$\lambda$は波長、$(x, y), (\xi, \eta)$は実空間および逆空間の座標を表す。
+
+\begin{equation}
+\label{eqn:fresnel_approximation_condition}
+    \frac{\pi}{4\lambda} \max \left\{ (x-\xi)^2 + (y-\eta)^2 \right\}^2 / z^3 \ll 1
+\end{equation}
+
+焦点面を3章\ref{chap3_dynamic_range}節に示したCCDカメラのサイズとして取りこれを計算すると、(左辺)の値は1.645 radとなった。
+これは十分小さいとは言えず、Fresnel回折近似を満たしているとは言えない。
+しかし、Fresnel回折近似を満たしていない場合でも、計算を進めていく上でそれがほとんど影響を及ぼさない場合がある。
+位相回復計算においては数万回の伝搬計算を行うため、1回のコストは最小限であることが好ましい。
+そこで、厳密計算であるRayleigh-Sommerfeld回折積分とFresnel回折積分近似の集光面強度分布を比較し、実用上の問題が存在するかどうかを検討する。
+まず、表\ref{tb:check_approximation_validity_1}に示すような適当な分割で回折積分を実行し、集光波面分布におけるメインピークのFWHMを調べる。
+
+\begin{table}[!ht]
+\begin{center}
+  \begin{tabular}{|c|c|} \hline
+    項目 & 値 \\ \hline
+    波長 & 632.8 nm \\
+    画素数 & $2048 \times 2048$ \\
+    焦点面ピクセルサイズ & \SI{5.0}{\micro \metre} \\ \hline
+  \end{tabular}
+  \caption{Fresnel回折近似適用可能性の検討1}
+  \label{tb:check_approximation_validity_1}
+\end{center}
+\end{table}
+
+計算の結果、プロファイルは図\ref{fig:fwhm_approximation}のようになった。
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=8cm]{../../chap2/figure/fwhm_approximation.png}
+\caption{回折積分計算による簡易的な計算で得られた焦点面強度プロファイル}
+\label{fig:fwhm_approximation}
+\end{figure}
+
+ここから計算されるFWHMは4ピクセル分の\SI{20}{\micro \metre}であった。
+これを踏まえ、メインピークを十分な分割数で観察できるよう焦点面ピクセルサイズが\SI{1}{\micro \metre}になるような表\ref{tb:check_approximation_validity_2}のパラメータで回折積分およびFresnel回折近似を用いた場合の集光面強度プロファイルを計算し、比較を行う。
+
+\begin{table}[!ht]
+\begin{center}
+  \begin{tabular}{|c|c|} \hline
+    項目 & 値 \\ \hline
+    波長 & 632.8 nm \\
+    画素数 & $4096 \times 4096$ \\
+    焦点面ピクセルサイズ & \SI{1.0}{\micro \metre} \\ \hline
+  \end{tabular}
+  \caption{Fresnel回折近似適用可能性の検討2}
+  \label{tb:check_approximation_validity_2}
+\end{center}
+\end{table}
+
+計算の結果、プロファイルは図\ref{fig:diffraction_comparison_comparison}のようになった。
+また、2つのプロファイルの差分を取って回折積分の最大値で規格化したグラフが図\ref{fig:diffraction_comparison_normalized_diff}である。
+
+\begin{figure}[!ht]
+\centering
+
+\subfloat[プロファイルプロット]{
+    \includegraphics[width=6cm]{../../chap2/figure/diffraction_comparison_profile.png}
+    \label{fig:diffraction_comparison_profile}
+}
+\subfloat[規格化されたプロファイル誤差]{
+    \centering
+    \includegraphics[width=6cm]{../../chap2/figure/diffraction_comparison_normalized_diff.png}
+    \label{fig:diffraction_comparison_normalized_diff}
+}
+
+\caption[]{Rayleigh-Sommerfeld回折積分とFresnel回折積分のプロファイル比較}
+\label{fig:diffraction_comparison}
+\end{figure}
+
+差分の絶対値の最大値は0.00242程度となった。
+これは十分小さく、実際の計測で生じうるノイズと同程度以下であるため、シミュレーションでの検討および位相回復計算を行う上で致命的な問題をもたらさない。
+ゆえに、以降の伝搬計算はFresnel回折近似を用いて行う。
+
+\subsection{位相接続(位相アンラッピング)}
+$\sin$関数などの周期関数は、逆関数の値域が周期以下の大きさしか持たないため、完全にもとの入力を戻すことはできない。
+複素波動場の位相分布についても同様である。
+$\exp(i\phi)$は周期$2\pi$の関数であり、逆関数は$\arg\{\exp(i\phi)\}=\phi \mod{2\pi}$と位相の$\mod{2\pi}$での剰余を返す。
+故に、位相分布が本来なめらかな関数として与えられたとしても、それが$2\pi$を超えるような範囲に渡って分布する際には必ずどこかで不連続に位相が飛んでしまう。
+例えば、$y = f(x) = 10x + 20x^2 \quad (x \in [0, 1])$に対して$z = \arg\{\exp(iy)\}$を取ると、図\ref{fig:wrapped_graph_example}のようになる。
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=10cm]{before_unwrap.png}
+\caption{arg関数によって不連続になったグラフの例}
+\label{fig:wrapped_graph_example}
+\end{figure}
+
+これに対して、離散化された領域において1ピクセルで$2\pi$以上のジャンプはないものと仮定して順番に接続を行うことで、なめらかな位相分布を取り戻すことができる。
+これを位相接続あるいは位相アンラップといい、1次元の離散列$y[n] = f(x[n])$および$z[n]=\arg\{\exp(iy[n])\}$に対して最もシンプルなアルゴリズムはAlgorithm \ref{alg:unwrap_1d}のようになる。
+連続した位置を走査していき、1つ前のピクセルと$\pi$以上の位相差が生じたらそれ以降の点全てに$2\pi$を足し引きし、位相を接続する。
+
+\begin{algorithm}                      
+\caption{1次元アンラップの例}         
+\label{alg:unwrap_1d}                          
+\begin{algorithmic}
+    \FOR{$n = 1 \ldots N-1$}
+        \STATE $\delta = \begin{cases}
+                -2 \pi & (z[n] + \pi < z[n]) \\
+                0 & (z[n] - \pi \leq z[n] \leq z[n] + \pi) \\
+                2 \pi & (z[n] < z[n] - \pi)
+            \end{cases}$
+        \FOR{$k = n \ldots N-1$}
+            \STATE $z[k] \leftarrow z[k] + \delta$
+        \ENDFOR
+    \ENDFOR
+\end{algorithmic}
+\end{algorithm}
+
+2次元のリング状の領域に対しても同様にできる。
+接続するべき2次元位相分布内において走査する範囲とその中での順序を決めれば、1次元の場合と同じアルゴリズムで接続を行うことができる。
+本研究では、図\ref{fig:unwrap_path}のように輪帯の中央部分を回転方向に走査したのちにその各点から動系方向に走査するといった順序で、Algorithm \ref{alg:unwrap_1d}を適用する。
+ミラー波面計測においては、経験的に十分な空間分解能があれば$2\pi$以上のジャンプはないと考えてよいとされており、本研究でも同様にその仮定をおいて測定を行う。
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=6cm]{unwrap_path.png}
+\caption{輪帯における位相接続の走査経路の例}
+\label{fig:unwrap_path}
+\end{figure}
+
+\subsection{位相回復シミュレーション}
+\label{chap3_transverse_simulation_result}
 
 \clearpage
 % ================================================== %
