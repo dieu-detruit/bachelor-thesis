@@ -175,6 +175,7 @@ Bessel点は均等荷重を受ける2点支持された梁の重力によるた�
 
 \section{撮影条件および撮影像の前処理}
 
+\subsection{撮影条件}
 撮影時の条件を表
 
 \begin{table}[!ht]
@@ -190,12 +191,91 @@ Bessel点は均等荷重を受ける2点支持された梁の重力によるた�
 \end{center}
 \end{table}
 
-\subsection{ダークフレームの除去}
-ビームをシャッターで遮り、光源からの光が入射していない状態で撮影しダークフレームを取得すると、それは一様に0とはならず、ノイズが存在する状態が確認できる。
-これは主に、CCDカメラに壊れている素子が存在していること、実験室を完全に暗転できないこと、熱による暗電流の3つが影響していると考えられ、位相回復に用いる計測データはこのノイズ成分を除去したものであることが望ましい。
-そこで、計測実験ごとに計測開始の直前に計8枚のダークフレームを取得し、単純加算平均の結果を計測データから差し引いた。
-露光時間は計測実験と同じ値に設定している。
 
+\subsection{ダークフレームの計測}
+\label{chap5_darkflame_measurement}
+
+入射ビームを遮断した場合においても、CCDカメラの検出する強度は0とはならない。
+実験室を完全に暗転できないこと、CCDカメラに壊れている素子が存在していること、熱によるノイズの発生などの要因によって、測定対象の各ピクセルの強度値にはシステムエラーが生じる。
+以下ではこれに対して適切な対策を施すため、計15枚のダークフレームを取得し、その代表的統計値を計算する。
+15枚のダークフレームから統計的に得られる情報として、画像内での強度のばらつきおよび撮影ごとのばらつきがある。
+まず、平均ダークフレーム中における統計情報を表\ref{tb:darkflame_average_data}および図\ref{fig:pinhole_arrangement_pictures}に示す。
+ただし、平均ダークフレームは15枚の単純平均によって計算した。
+ヒストグラムは、全体が中央値付近に偏って分布しているため、領域を絞って表示している。
+
+\begin{table}[!ht]
+\begin{center}
+  \begin{tabular}{|c|c|} \hline
+    パラメータ & 値 \\ \hline
+    最大値 & 62444.36 \\
+    最小値 & 1063.60 \\
+    平均値 & 1113.45 \\
+    中央値 & 1113.07 \\
+    標準偏差 & 60.8071 \\ \hline
+  \end{tabular}
+  \caption{15枚のダークフレームの平均の統計情報}
+  \label{tb:darkflame_average_data}
+\end{center}
+\end{table}
+
+\begin{figure}[!ht]
+\centering
+
+\subfloat[1次元化した平均ダークフレーム強度分布]{
+    \includegraphics[width=7cm]{darkflame_average_ravel.png}
+    \label{fig:darkflame_average_ravel}
+}
+\subfloat[ダークフレームのヒストグラム]{
+    \centering
+    \includegraphics[width=7cm]{darkflame_average_histogram.png}
+    \label{fig:darkflame_average_histogram}
+}
+
+\caption[]{平均ダークフレームにおける統計情報}
+\label{fig:darkflame_average_stat}
+\end{figure}
+
+続いて、ダークフレームの撮影ごとの変化について目を向け、各ピクセルごとに求められるダークフレームに関しての統計情報を示す。
+
+\begin{table}[!ht]
+\begin{center}
+  \begin{tabular}{|c|c|} \hline
+    パラメータ & 値 \\ \hline
+    最大値 & 3040.99 \\
+    最小値 & 4.10 \\
+    平均値 & 15.46 \\
+    中央値 & 15.33 \\
+    標準偏差 & 4.11 \\ \hline
+  \end{tabular}
+  \caption{ダークフレームの標準偏差の統計情報}
+  \label{tb:darkflame_deviation_data}
+\end{center}
+\end{table}
+
+\begin{figure}[!ht]
+\centering
+
+\subfloat[1次元化したダークフレーム標準偏差の強度分布]{
+    \includegraphics[width=7cm]{darkflame_deviation_ravel.png}
+    \label{fig:darkflame_deviation_ravel}
+}
+\subfloat[ダークフレーム標準偏差のヒストグラム]{
+    \centering
+    \includegraphics[width=7cm]{darkflame_deviation_histogram.png}
+    \label{fig:darkflame_deviation_histogram}
+}
+
+\caption[]{ダークフレーム標準偏差における統計情報}
+\label{fig:darkflame_deviation_stat}
+\end{figure}
+
+平均ダークフレームに関して、全体として1000程度のオフセットがあり、これは実験室内の機器の光が漏れてCCDカメラに入射しているものと考えられる。
+またごく少数(20ピクセル程度)ではあるが、10000を超えるような値を取っているピクセルがあり、そのようなピクセルの標準偏差はいずれも1\%以下程度であるためこれは素子が不能になっているものと考えられる。
+また15枚のダークフレーム間での標準偏差に関して、この平均値は十分に小さく撮影ごとの変化は大きくないと言える。
+
+\subsection{ダークフレームの除去}
+\ref{chap5_darkflame_measurement}節の計測により、ダークフレームの撮影ごとの変化はかなり小さいこと、また実験室内に存在する外乱光の影響で全体に1000程度の強度が乗ることが分かった。
+外乱光の除去のため、計測開始の直前に計8枚のダークフレームを取得し、単純加算平均の結果を計測データから差し引いた。
 
 \clearpage
 % ================================================== %
