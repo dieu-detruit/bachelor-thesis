@@ -31,17 +31,27 @@
 \section{実験の構成および設計パラメータ}
 \label{chap4_experiment_setup}
 
+実験系全体の構成を図\ref{fig:lens_experiment_schematic}に示す。
 \ref{chap4_introduction}節で述べたとおり、本章ではほぼ理想的な輪帯上の集光波面を擬似的に生成し、これに対して波面計測を行う。
 輪帯上の集光波面は、図\ref{fig:psuedo_focusing_ring_model}に示すように輪帯アパーチャ及び集光レンズによって生成される。
+このようにして作られる輪帯状の波面に対して直後に挿入したピンホールを走査することでこれを回復することを試みる。
 
 \begin{figure}[!ht]
 \centering
-\includegraphics[width=13cm]{psuedo_focusing_ring.png}
+\includegraphics[width=13cm]{lens_experiment_schematic.png}
+\caption{疑似輪帯を用いた実験系の構成}
+\label{fig:lens_experiment_schematic}
+\end{figure}
+
+
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=12cm]{psuedo_focusing_ring.png}
 \caption{疑似的な輪帯状集光ビームの生成}
 \label{fig:psuedo_focusing_ring_model}
 \end{figure}
 
-疑似輪帯を用いた計測実験は、本来の測定対象であるWolterミラーと同様の光学的パラメータで構成されるべきだが、入手性の問題からここではレンズとして口径は異なるがNAがWolterミラーのそれとほぼ等しいレンズを用いる。
+疑似輪帯を用いた計測実験は、本来の測定対象であるWolterミラーと同様の光学的パラメータで構成されるべきだが、入手性を考慮してから口径がやや小さいレンズで、NAがWolterミラーとほぼ等しいものを用いる。
 用いたレンズのパラメータは表\ref{tb:focusing_lens_params}に示す通りである。
 
 \begin{table}[h]
@@ -58,6 +68,8 @@
 \end{table}
 
 これに合わせて、輪帯開口および位相回復に用いるピンホールを図\ref{fig:lens_pinhole_ring_aperture}の用に設計した。
+輪帯は完全ではなく、輪帯の内側と外側をブリッジする部分によって切断されている。
+このブリッジ部分が回復された強度分布に現れることは、位相回復が正しくなされていることを示す一つの根拠となる。
 
 \begin{figure}[!ht]
 \centering
@@ -76,29 +88,41 @@
 \label{fig:lens_pinhole_ring_aperture}
 \end{figure}
 
+実際の装置を図\ref{fig:lens_experiment_photograph}に示す。
+
+\begin{figure}[!ht]
+\centering
+
+\subfloat[全体概観]{
+    \centering
+    \includegraphics[width=6cm]{photo_lens_experiment_overall.png}
+    \label{fig:lens_experiment_photo_overall}
+}
+\subfloat[ピンホールおよび集光レンズ]{
+    \centering
+    \includegraphics[width=6cm]{photo_pinhole_and_lens.png}
+    \label{fig:lens_experiment_photo_pinhole_and_lens}
+}
+
+\caption[]{レンズ実験の装置概観}
+\label{fig:lens_experiment_photograph}
+\end{figure}
+
+
+
 \clearpage
 % ================================================== %
 % section
 % ================================================== %
 \newpage
 
+\section{下流端走査による位相回復の結果}
+\label{chap4_transverse_lens_result}
 
-\section{疎条件を利用した位相回復の結果}
-回復計算に用いたパラメータは以下の通りである。
-
-回復計算が収束しなかった。
-
-
-\clearpage
-% ================================================== %
-% section
-% ================================================== %
-\newpage
-
-\section{下流端走査によるタイコグラフィの結果}
+\subsection{回復計算の結果}
+\label{chap4_transverse_lens_single_result}
 
 
-\subsection{半周のみ走査した場合のタイコグラフィの結果}
 
 \subsection{繰り返し計測の結果}
 
