@@ -139,7 +139,6 @@ Bessel点は均等荷重を受ける2点支持された梁の重力によるた�
 
 \section{計測波面以外の通過光の処理方法に関する検討}
 測定対象となっている天文用Wolterミラーは、X線集光用に設計・作製されたものであり、可視光を入射した際にどのような集光波面が生じるかは未検討である。
-%特に、可視光はX線に比べ2桁程度波長が長く、回折の影響が顕著であることが大きな差異として存在する。
 \ref{chap4}章での提案手法の検討は、あくまで波面計測の対象である輪帯のみが存在する場合について行われたが、実際にミラーを計測する実験においては測定対象以外の光も通過してCCDカメラの方向に進行する。
 円形の平行光を入射した際にミラーより下流に通過する光は、図\ref{fig:mirror_beam_path_types}に示す通り3種類存在する。
 1つは計測対象の2回反射光、1つは放物面には当たらず双曲面で1回だけ反射された光、1つは直接通過光である。
@@ -166,7 +165,7 @@ Bessel点は均等荷重を受ける2点支持された梁の重力によるた�
 % ================================================== %
 \newpage
 
-\section{撮影条件および撮影像の前処理}
+\section{撮影条件およびデータの処理}
 
 \subsection{撮影条件}
 撮影時の条件を表
@@ -175,15 +174,12 @@ Bessel点は均等荷重を受ける2点支持された梁の重力によるた�
 \begin{center}
   \begin{tabular}{|c|c|} \hline
     パラメータ & 値 \\ \hline
-    温度 & \SI{20}{\degreeCelsius}  \\
-    CCDカメラ設定温度 & \SI{15}{\degreeCelsius} \\
-    設計波長 & 541.6 nm \\ \hline
+    CCDカメラ設定温度 & \SI{20}{\degreeCelsius}  \\ \hline
   \end{tabular}
-  \caption{Wolterミラー計測実験装置における各素子のパラメータ}
+  \caption{Wolterミラー計測実験の条件}
   \label{tb:mirror_experiment_params}
 \end{center}
 \end{table}
-
 
 \subsection{ダークフレームの計測}
 \label{chap5_darkflame_measurement}
@@ -280,8 +276,99 @@ Bessel点は均等荷重を受ける2点支持された梁の重力によるた�
 \section{下流端走査タイコグラフィの結果}
 \label{chap5_mirror_transverse_result}
 
+\subsection{回復結果}
+
+\begin{figure}[!ht]
+\centering
+\subfloat[回復された位相分布]{
+    \includegraphics[width=7cm]{reconstructed_phase_before_unwrap.png}
+    \label{fig:reconstructed_phase_before_unwrap}
+}
+\subfloat[位相アンラップ後の位相分布]{
+    \centering
+    \includegraphics[width=7cm]{reconstructed_phase_unwrapped.png}
+    \label{fig:reconstructed_phase_unwrapped}
+}
+\caption[]{回復された位相分布の位相アンラップ}
+\label{fig:reconstructed_phase_unwrapping}
+\end{figure}
 
 
+\begin{figure}[!ht]
+\centering
+\subfloat[回復された位相分布(極座標)]{
+    \includegraphics[width=7cm]{reconstructed_phase_before_unwrap_polar.png}
+    \label{fig:reconstructed_phase_before_unwrap_polar}
+}
+\subfloat[位相アンラップ後の位相分布(極座標)]{
+    \centering
+    \includegraphics[width=7cm]{reconstructed_phase_unwrapped_polar.png}
+    \label{fig:reconstructed_phase_unwrapped_polar}
+}
+\caption[]{回復された位相分布の位相アンラップ(極座標)}
+\label{fig:reconstructed_phase_unwrapping_polar}
+\end{figure}
+
+輪帯幅のちょうど半分に当たる部分について回転角度方向にプロファイルを取ると、非点収差にあたる$\sin(\theta)$の成分が現れた。
+これを$A \sin(\theta + \theta_0)$の形で最小自乗フィッテイングして重ねたものが図\ref{fig:astigmatism_fitted}である。
+また、その差分を図\ref{fig:astigmatism_canceled}に示す。
+
+ここで、真円度測定器RoncorderEC1550によって測定された周方向誤差プロファイルを図\ref{fig:roundness_error}に示す。
+図\ref{fig:roundness_error_each}は上流側(放物面側)からの光軸方向距離$z$に応じてその周方向誤差を計測したプロファイルであり、図\ref{fig:roundness_error_average}はその単純平均である。
+
+\begin{figure}[!ht]
+\centering
+\subfloat[光軸方向の各位置での周方向誤差プロファイル]{
+    \includegraphics[width=7cm]{roundness_error_each.png}
+    \label{fig:roundness_error_each}
+}
+\subfloat[平均化された周方向誤差プロファイル]{
+    \centering
+    \includegraphics[width=7cm]{roundness_error_average.png}
+    \label{fig:roundness_error_average}
+}
+\caption[]{真円度測定器での周方向誤差プロファイル測定結果}
+\label{fig:roundness_error}
+\end{figure}
+
+回復された位相の周方向分布においてフィッティングされた非点収差成分は、その振幅が7.68 rad ($1.22\lambda$)であった。
+これを周方向誤差量に換算すると\SI{101.5}{\micro \metre}程度になり、これがミラーによるものであるとすると真円度測定結果と大きく矛盾するため、非点収差がミラーに起因するものであるかどうかを確認する。
+焦点面における強度分布を撮影すると、図\ref{fig:astigmatism_focus_before_rotation}のようであり、確かに集光点が円形ではなく十字の広がりを持っており、非点収差が存在することが確認できる。
+続いて、ミラーを45度程度回転し、同様に焦点面における強度分布を撮影したものが図\ref{fig:astigmatism_focus_after_rotation}である。
+ミラーに起因する非点収差であればミラーの回転に伴って集光点のパターンが回転するはずだが、ほとんど変わらない分布を示している。
+これにより、位相回復結果から算出された非点収差はミラーより上流側の入射ビームの生成において生じたものであると結論付けることができる。
+
+
+\begin{figure}[!ht]
+\centering
+\subfloat[輪帯中央における位相分布とsinフィッティング]{
+    \includegraphics[width=7cm]{astigmatism_fitted.png}
+    \label{fig:astigmatism_fitted}
+}
+\subfloat[非点収差成分を差し引いた位相分布]{
+    \centering
+    \includegraphics[width=7cm]{astigmatism_canceled.png}
+    \label{fig:astigmatism_canceled}
+}
+\caption[]{回復された位相分布の位相アンラップ(極座標)}
+\label{fig:astigmatism_analysis}
+\end{figure}
+
+
+\begin{figure}[!ht]
+\centering
+\subfloat[回転前の焦点面強度分布]{
+    \includegraphics[width=7cm]{before_rotation.png}
+    \label{fig:astigmatism_focus_before_rotation}
+}
+\subfloat[回転後の焦点面強度分布]{
+    \centering
+    \includegraphics[width=7cm]{after_rotation.png}
+    \label{fig:astigmatism_focus_after_rotation}
+}
+\caption[]{回転前後の焦点面強度分布}
+\label{fig:darkflame_deviation_stat}
+\end{figure}
 
 % ================================================== %
 % section
