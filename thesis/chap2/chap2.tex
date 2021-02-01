@@ -232,7 +232,29 @@ Fresnel回折近似が成り立つための条件は、近似で切り捨てる�
 
 
 \section{シミュレーションの方法}
+\label{chap2_simulation_methodology}
+
 この節では、シミュレーションの方法について述べる。
+誤差応答シミュレーションは、誤差を反映したミラー形状から下流端面における位相分布を求め、そこから焦点面に伝播するという流れに沿って行われる。
+多数の条件に対して効率よくシミュレーションを行うため、下流端面上の波動場計算は幾何光学に基づいて行い、また下流端面から焦点面への伝播は\ref{chap2_wolter_diffraction_apporoximation}節に述べたようにFresnel回折近似を用いて計算する。
+以下に具体的なシミュレーションの手順を示す。
+
+\begin{enumerate}[\expandafter\maru 1]
+  \item 放物面および双曲面について、ミラー表面の表現$f(x, y, z)=0$を理想形状の場合と誤差を考慮した場合それぞれについて与える。理想形状のミラーの場合、これは具体的に式\ref{eqn:parabola_surface_func}および式\ref{eqn:parabola_surface_func}のように与えられる。 \\
+    \begin{eqnarray}
+        f_p(x, y, z) &=& x^2 + y^2 - \left|4p(z-p-f2)\right| = 0 \label{eqn:parabola_surface_func} \\
+        f_h(x, y, z) &=& \frac{\left(z - \frac{(f1 + f2)}{2}\right)^2}{a^2} - \frac{x^2 + y^2}{b^2} - 1 = 0 \label{eqn:hyperbola_surface_func}
+    \end{eqnarray}
+  \item 次に、ミラー下流端面を$N \times N$の小領域に分割し、ミラー形状から計算される定義域内の各点について幾何光学に基づいて以下のように光路長を計算することで、集光波面を求める。
+    \begin{enumerate}[(1)]
+      \item 下流端面上の点をPとする。
+        誤差のない理想形状のミラーによって2回の反射の後Pに到達するような入射光線を求める。
+        具体的には、焦点からPに向かう光線を双曲面、放物面の順に反射する。
+        反射点は光線と\expandafter\maru 1 で与えた$f(x, y, z)=0$との交点として、また反射光の向きは反射の法則から$\mathbf{r} = \mathbf{i} + 2 (-\mathbf{i} \cdot \mathbf{n}) \mathbf{n}$として計算できる。
+      \item 求めた入射光線を初期値としてこれを$x, y$方向に動かして最適化し、誤差を入力したミラーにおける入射光線を求める。
+        入射光線を$(x, y)$を通る$z$軸に平行な直線として与え、2回反射後の下流端面における目標の点との位置誤差を$\mathbf{0}$とするようにこれを動かす。
+    \end{enumerate}
+\end{enumerate}
 
 
 \clearpage
@@ -250,7 +272,7 @@ Fresnel回折近似が成り立つための条件は、近似で切り捨てる�
 \begin{figure}[ht]
 \centering
 \includegraphics[width=6cm]{corona_spectrum.png}
-\caption{太陽コロナ活動領域のX線スペクトル}
+\caption{太陽コロナ活動領域のX線スペクトル\cite{2019AGUFMSH31C3315V}}
 \label{fig:corona_spectrum}
 \end{figure}
 

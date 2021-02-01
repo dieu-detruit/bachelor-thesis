@@ -20,7 +20,16 @@
 \usepackage{float}
 \usepackage{siunitx}
 \usepackage{comment}
+\usepackage{enumerate}
 
+% 丸付き文字
+\newcommand{\maru}[1]{{\ooalign{\hfil
+ \ifnum#1>999 \resizebox{.25\width}{\height}{#1}\else%
+ \ifnum#1>99 \resizebox{.33\width}{\height}{#1}\else%
+ \ifnum#1>9 \resizebox{.5\width}{\height}{#1}\else #1%
+ \fi\fi\fi%
+\/\hfil\crcr%
+\raise.167ex\hbox{\mathhexbox20D}}}}
 
 %\renewcommand{\figurename}{Fig. }
 %\renewcommand{\tablename}{Table }
