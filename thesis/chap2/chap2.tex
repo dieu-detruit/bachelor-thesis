@@ -235,7 +235,7 @@ Fresnel回折近似が成り立つための条件は、近似で切り捨てる�
 \label{chap2_simulation_methodology}
 
 この節では、シミュレーションの方法について述べる。
-誤差応答シミュレーションは、誤差を反映したミラー形状から下流端面における位相分布を求め、そこから焦点面に伝播するという流れに沿って行われる。
+誤差応答シミュレーションは、図\ref{fig:simulation_schematic}に示すように、ミラー反射光が生成する下流端面における集光ビームの位相分布を求め、そこから焦点面に伝播するという流れに沿って行われる。
 多数の条件に対して効率よくシミュレーションを行うため、下流端面上の波動場計算は幾何光学に基づいて行い、また下流端面から焦点面への伝播は\ref{chap2_wolter_diffraction_apporoximation}節に述べたようにFresnel回折近似を用いて計算する。
 以下に具体的なシミュレーションの手順を示す。
 
@@ -245,16 +245,54 @@ Fresnel回折近似が成り立つための条件は、近似で切り捨てる�
         f_p(x, y, z) &=& x^2 + y^2 - \left|4p(z-p-f2)\right| = 0 \label{eqn:parabola_surface_func} \\
         f_h(x, y, z) &=& \frac{\left(z - \frac{(f1 + f2)}{2}\right)^2}{a^2} - \frac{x^2 + y^2}{b^2} - 1 = 0 \label{eqn:hyperbola_surface_func}
     \end{eqnarray}
-  \item 次に、ミラー下流端面を$N \times N$の小領域に分割し、ミラー形状から計算される定義域内の各点について幾何光学に基づいて以下のように光路長を計算することで、集光波面を求める。
+  \item 次に、図\ref{fig:simulation_raytrace}に示すように、ミラー下流端面を$N \times N$の小領域に分割し、ミラー形状から計算される定義域内の各点について幾何光学に基づいて以下のように光路長を計算することで、集光波面を求める。
     \begin{enumerate}[(1)]
       \item 下流端面上の点をPとする。
         誤差のない理想形状のミラーによって2回の反射の後Pに到達するような入射光線を求める。
-        具体的には、焦点からPに向かう光線を双曲面、放物面の順に反射する。
-        反射点は光線と\expandafter\maru 1 で与えた$f(x, y, z)=0$との交点として、また反射光の向きは反射の法則から$\mathbf{r} = \mathbf{i} + 2 (-\mathbf{i} \cdot \mathbf{n}) \mathbf{n}$として計算できる。
-      \item 求めた入射光線を初期値としてこれを$x, y$方向に動かして最適化し、誤差を入力したミラーにおける入射光線を求める。
-        入射光線を$(x, y)$を通る$z$軸に平行な直線として与え、2回反射後の下流端面における目標の点との位置誤差を$\mathbf{0}$とするようにこれを動かす。
+        具体的には、焦点からPに向かう光線を双曲面、放物面の順に反射すれば、得られた光線が入射光線となる。
+        反射の計算について、反射点は光線と\expandafter\maru 1 で与えた$f(x, y, z)=0$との交点として、また反射光の向きは反射の法則から$\mathbf{r} = \mathbf{i} + 2 (-\mathbf{i} \cdot \mathbf{n}) \mathbf{n}$として計算できる。
+      \item 求めた入射光線を初期値として光線位置を$x, y$方向に動かして最適化し、誤差を入力したミラーにおける入射光線を求める。
+        最適化計算はBroyden法で行う。
+        入射光線の位置$(x, y)$を変数、2回反射後の下流端面における目標の点との位置誤差を目標値$\mathbf{E}$として、$\mathbf{E}=\mathbf{0}$を解けばよい。
+        入射光線を$(x, y)$を通る$z$軸に平行な直線として与え、2回反射後の下流端面における目標の点との位置誤差を$\mathbf{0}$に近づけるようにこれを動かす。
+      \item 求めた入射光線に対してミラー上流端面から下流端面に至るまでの距離$L$を計算し、点$P$での位相を$k L$(波動場を$\exp(i k L)$)として点$P$に関する計算を終了する。
     \end{enumerate}
+  \item 次に、\expandafter\maru 2 で求めた下流端面上の各点$P$に対応する光路から、集光面の光軸方向位置の最適化を行う。
+    図\ref{fig:simulation_focal_point_optimize}下流端面から集光点に向かう光線の$z=f$上の分布に対し、重心点と各点の距離の2乗和を$E$とする。
+    $E$を最小化するように$f$を変化させることで、収束した$f$と重心点を$G(x_G, y_G)$から焦点位置が$F(x_G, y_G, f)$と定まる。
+    初期値には理想の焦点距離$f_1$を与え、最適化は黄金探索によって行う。
+  \item 最後に、下流端面から焦点面$z=f$に向かって$(x, y)=(x_G, y_G)$を光軸としてFresnel近似を利用した伝播計算を行う。
 \end{enumerate}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=12cm]{method/simulation_schematic.png}
+\caption{シミュレーションの概観}
+\label{fig:simulation_schematic}
+\end{figure}
+
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=10cm]{method/simulation_raytrace_schematic.png}
+\caption{光線追跡による下流端面波動場の計算}
+\label{fig:simulation_raytrace}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=10cm]{method/simulation_backtrace.png}
+\caption{点$P$に到達する光路の計算}
+\label{fig:simulation_backtrace}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=14cm]{method/simulation_focal_point_optimize.png}
+\caption{焦点位置の計算}
+\label{fig:simulation_focal_point_optimize}
+\end{figure}
+
 
 
 \clearpage
@@ -264,33 +302,90 @@ Fresnel回折近似が成り立つための条件は、近似で切り捨てる�
 \newpage
 
 \section{計算条件}
-\ref{chap5}章で実際に利用する測定対象のミラーについて、誤差応答のシミュレーションを行う。
+\label{chap2_simulation_condition}
+
+
+
+\subsection{光源の波長・エネルギー}
+\label{chap2_incident_beam_energy}
 
 図\ref{fig:corona_spectrum}は、FOXSI3において撮影されたデータから解析された太陽コロナの活動領域におけるX線スペクトルである。\cite{2019AGUFMSH31C3315V}
-これをもとに考えれば、測定対象となるX線のエネルギーは数百eVから4keV程度であることになる。
+これをもとに考えれば、測定対象となるX線のエネルギーは数百 eV から 4 keV程度であることになる。
 
 \begin{figure}[ht]
 \centering
-\includegraphics[width=6cm]{corona_spectrum.png}
+\includegraphics[height=4cm]{corona_spectrum.png}
 \caption{太陽コロナ活動領域のX線スペクトル\cite{2019AGUFMSH31C3315V}}
 \label{fig:corona_spectrum}
 \end{figure}
 
-本章では表\ref{tb:simulation_target_energy}に示すように、太陽コロナの観測の際に測定対象となるX線領域のうち数点、および5章の波面計測実験に用いる可視光ビームの波長を対象にシミュレーションを行う。
+本章では表\ref{tb:simulation_target_energy}に示すように、厳しい形状精度が求められる 4 keV のX線、および\ref{chap5}章の波面計測実験に用いる可視光ビームの波長 632.8 nm を対象にシミュレーションを行う。
 
 \begin{table}[!ht]
 \begin{center}
-  \begin{tabular}{|c|c|} \hline
-    エネルギー & 波長 \\ \hline
-    19.59 eV & 632.8 nm \\
-    300.0 eV & 4.133 nm  \\
-    1.0 keV & 1.240 nm  \\
-    3.0 keV & 0.413 nm  \\ \hline
+  \begin{tabular}{|c|c|l|} \hline
+    エネルギー & 波長 & 説明 \\ \hline
+    4.0 keV & 0.310 nm & 太陽観測時に対称となるX線 \\
+    19.59 eV & 632.8 nm & 可視光計測に用いるHe-Neレーザー \\ \hline
   \end{tabular}
   \caption{シミュレーションで入力する波長・エネルギー}
   \label{tb:simulation_target_energy}
 \end{center}
 \end{table}
+
+\subsection{入力する形状誤差}
+\label{chap2_error_input_types}
+
+入力する形状誤差の種類について述べる。
+
+\begin{figure}[!ht]
+\centering
+
+\subfloat[直径誤差]{
+    \includegraphics[height=3cm]{error_types/diameter_error_schematic.png}
+    \label{fig:diameter_error_schematic}
+}
+\hspace{5mm}
+\subfloat[周方向2山誤差]{
+    \includegraphics[height=3cm]{error_types/oval_error_schematic.png}
+    \label{fig:oval_error_schematic}
+}
+\hspace{5mm}
+\subfloat[周方向中周期誤差]{
+    \includegraphics[height=3cm]{error_types/roundness_medium_error_schematic.png}
+    \label{fig:roundness_medium_error_schematic}
+}
+\hspace{5mm}
+\subfloat[周方向短周期誤差]{
+    \includegraphics[height=3cm]{error_types/roundness_short_error_schematic.png}
+    \label{fig:roundness_short_error_schematic}
+}
+\\
+
+\subfloat[テーパー角誤差]{
+    \includegraphics[height=3cm]{error_types/taper_error_schematic.png}
+    \label{fig:taper_error_schematic}
+}
+\hspace{5mm}
+\subfloat[光軸たわみ]{
+    \includegraphics[height=3cm]{error_types/axis_deflection_schematic.png}
+    \label{fig:axis_deflection_schematic}
+}
+\\
+
+\subfloat[長手方向長周期形状誤差]{
+    \includegraphics[height=3cm]{error_types/profile_long_error_schematic.png}
+    \label{fig:profile_long_error_schematic}
+}
+\hspace{5mm}
+\subfloat[長手方向中周期形状誤差]{
+    \includegraphics[height=3cm]{error_types/profile_medium_error_schematic.png}
+    \label{fig:profile_medium_error_schematic}
+}
+
+\caption[]{入力するミラー形状誤差の種類}
+\label{fig:fwhm_explanation}
+\end{figure}
 
 \clearpage
 % ================================================== %
