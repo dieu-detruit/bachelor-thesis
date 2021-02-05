@@ -305,7 +305,6 @@ Fresnel回折近似が成り立つための条件は、近似で切り捨てる�
 \label{chap2_simulation_condition}
 
 
-
 \subsection{光源の波長・エネルギー}
 \label{chap2_incident_beam_energy}
 
@@ -325,7 +324,7 @@ Fresnel回折近似が成り立つための条件は、近似で切り捨てる�
 \begin{center}
   \begin{tabular}{|c|c|l|} \hline
     エネルギー & 波長 & 説明 \\ \hline
-    4.0 keV & 0.310 nm & 太陽観測時に対称となるX線 \\
+    4.0 keV & 0.310 nm & 太陽コロナの観測時に対象となるX線 \\
     19.59 eV & 632.8 nm & 可視光計測に用いるHe-Neレーザー \\ \hline
   \end{tabular}
   \caption{シミュレーションで入力する波長・エネルギー}
@@ -336,7 +335,14 @@ Fresnel回折近似が成り立つための条件は、近似で切り捨てる�
 \subsection{入力する形状誤差}
 \label{chap2_error_input_types}
 
-入力する形状誤差の種類について述べる。
+この節では、入力する形状誤差の種類について述べる。
+まず、形状誤差による波面誤差の線形性について述べておく。
+波面誤差とは、ミラーの形状誤差による光路長の変化量に他ならない。
+平面のミラーで単純化して考えれば、位置
+
+形状誤差は周方向および長手方向の2つの軸で分けて考える。
+まず周方向の誤差として、$\Delta r(\theta)=\Delta r_{\mathrm{ideal}}(\theta) + \delta$となる(\ref{sub@fig:diameter_error_schematic})直径誤差、および$\Delta r(\theta)=\Delta r_{\mathrm{ideal}}(\theta) + \delta(\theta)$ ($\delta(\theta)$は平均$0$でp-vが$\delta_{\mathrm{pv}}$)となるような真円度誤差の2種類が存在する。
+後者の真円度誤差は周期によって3種類に分け、$sin(2\theta)$で表される(\ref{sub@fig:oval_error_schematic})2山誤差、および(\ref{sub@fig:roundness_medium_error_schematic})中周期誤差、(\ref{sub@fig:roundness_short_error_schematic})短周期誤差として扱う。
 
 \begin{figure}[!ht]
 \centering
@@ -406,20 +412,10 @@ Fresnel回折近似が成り立つための条件は、近似で切り捨てる�
     \includegraphics[width=3cm]{ideal/visible_light_focus_abs.png}
     \label{fig:visible_light_ideal_focus_abs}
 }
-\subfloat[300eV]{
-    \centering
-    \includegraphics[width=3cm]{ideal/300eV_focus_abs.png}
-    \label{fig:300eV_ideal_focus_abs}
-}
-\subfloat[1keV]{
-    \centering
-    \includegraphics[width=3cm]{ideal/1keV_focus_abs.png}
-    \label{fig:1keV_ideal_focus_abs}
-}
-\subfloat[3keV]{
+\subfloat[4keV]{
     \centering
     \includegraphics[width=3cm]{ideal/3keV_focus_abs.png}
-    \label{fig:3keV_ideal_focus_abs}
+    \label{fig:4keV_ideal_focus_abs}
 }
 \caption[]{理想的なミラーの各波長に対する集光波面}
 \label{fig:fwhm_explanation}
@@ -431,10 +427,10 @@ Fresnel回折近似が成り立つための条件は、近似で切り捨てる�
 
 \begin{table}[!ht]
 \begin{center}
-  \begin{tabular}{|c|c|c|c|c|} \hline
-    項目 & 可視光(632.8nm) & 300eV & 1keV & 3keV \\ \hline
-    HPD & 8.989 mm & \SI{23.38}{\micro \metre} & \SI{20.37}{\micro \metre} & \SI{19.45}{\micro \metre} \\
-    FWHM & \SI{19.53}{\micro \metre} & \SI{0}{\micro \metre} & \SI{0}{\micro \metre} & \SI{0}{\micro \metre} \\ \hline
+  \begin{tabular}{|c|c|c|} \hline
+    項目 & 可視光(632.8nm) & 4keV \\ \hline
+    HPD & 8.989 mm & \SI{19.45}{\micro \metre} \\
+    FWHM & \SI{19.53}{\micro \metre} & \SI{0}{\micro \metre} \\ \hline
   \end{tabular}
   \caption{理想集光の場合のHPDおよびFWHM}
   \label{tb:ideal_focus_evaluation}
@@ -450,28 +446,21 @@ Fresnel回折近似が成り立つための条件は、近似で切り捨てる�
 \section{各誤差入力に対するシミュレーション}
 \label{chap2_simulation_error_response}
 
-本節では、ミラーの製造過程で発生する様々な誤差要因についてその概要を示した上で、それを与えた時の集光波面の変化についてシミュレーションを行う。
-シミュレーションでは、\ref{chap2_beam_evaluation_standard}節で述べた3つの評価基準に対応した、許容誤差の閾値を示す。
-まず、Strehl比の解析により回折限界集光を達成する上で許容される誤差を評価し、続いて天文用Wolterミラーの達成目標として定めた1秒角分解能の達成に対して求められる許容誤差をHPDおよびFWHMを用いてレイリーの解像限界に照らし合わせて評価する。
+\subsection{X線に対する許容誤差量の解析}
+\label{chap2_xray_allowed_error}
 
-\subsection{直径誤差}
+まず、4 keV のX線を光源とした場合について、回折限界集光および目標のHPDを達成する上で許容される最大の誤差量を求める。
 
-\subsection{扁平誤差}
-
-\subsection{周方向形状誤差}
-
-\subsection{長手方向形状誤差}
-
-\subsection{設置角度誤差}
-
-\subsection{設置位置誤差}
-
-
-\clearpage
-% ================================================== %
-% section
-% ================================================== %
-\newpage
+\begin{table}[!ht]
+\begin{center}
+  \begin{tabular}{|c|c|c|} \hline
+    形状誤差の種類 & Strehl比0.8 & HPD 1 秒角 \\ \hline
+    (\ref{sub@fig:diameter_error_schematic}) 直径誤差 & 0.0 mm & 0.0 mm
+  \end{tabular}
+  \caption{理想集光の場合のHPDおよびFWHM}
+  \label{tb:xray_allowed_error}
+\end{center}
+\end{table}
 
 
 \clearpage
