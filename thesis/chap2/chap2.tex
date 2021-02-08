@@ -15,9 +15,9 @@
 \label{chap2_introduction}
 
 Wolterミラーを光学系に組み込んで利用する際、大きく分けて2つの誤差によってその理想の集光・結像が損なわれる。
-ひとつは設計曲面と実際に加工されたミラー表面の形状の誤差、もうひとつはミラー設置時の位置・姿勢の誤差である。
-誤差応答、すなわちこれらの誤差が存在する際に集光点の様子がどのように変化するかを調べることで、Wolterミラーの利用時に求められる性能を発揮する上で許容される誤差の量が計算できる。
-また、可視光光源を用いた位相回復法によってこれらの許容誤差範囲に収まっているかどうか判定することが可能であるかどうかを知る必要がある。
+一つは設計曲面と実際に加工されたミラー表面の形状の誤差、もう一つはミラー設置時の位置・姿勢の誤差である。
+これらの誤差が存在するとき、集光点の様子がどのように変化するかを調べることで、Wolterミラーが十分な性能を発揮するには誤差量をどの程度まで抑えなければならないかを調べることができる。
+また、ミラーがそれらの許容値を下回っているかどうか可視光光源を用いた計測手法によって測定可能であるかどうかを知る必要がある。
 これらを踏まえ、本章では3段階に渡って誤差応答シミュレーションを行う。
 まず、実際にWolterミラーが用いられるX線領域のうち2つの代表的な波長について、各種の誤差を入力した際の集光波面を算出し、許容できる誤差量を計算する。
 続いて、ちょうど許容誤差の限界値ぶんの誤差がミラーに存在する場合に可視光を入射した際の位相分布を計算し、可視光による測定が可能であるかどうか、また可能であるならばどういった測定仕様を満たす必要があるかを計算する。
@@ -402,34 +402,74 @@ Fresnel回折近似が成り立つための条件は、近似で切り捨てる�
 \section{理想集光}
 \label{chap2_ideal_focusing}
 
-まず、誤差入力を与える前に、誤差のない理想的なミラー形状に対する集光面強度分布を計算し、その特徴について述べる。
+誤差入力を与える前に、誤差のない理想的なミラー形状に対する集光面強度分布を計算しておく。
+表\ref{tb:ideal_simulation_params}に計算の条件を、またこれに対する可視光と硬X線に対する計算結果を図\ref{fig:ideal_simulation_visible}および図\ref{fig:ideal_simulation_xray}に示す。
 
-\begin{comment}
+\begin{table}[!ht]
+\centering
+  \subfloat[可視光]{
+    \begin{tabular}{|c|c|} \hline
+      項目 & 値 \\ \hline
+      エネルギー & 19.59 eV \\
+      波長 & 632.8 nm \\
+      画素数 & $4096 \times 4096$ \\
+      焦点面画素サイズ & \SI{1.0}{\micro \metre} \\ \hline
+    \end{tabular}
+    \label{tb:ideal_simulation_params_visible}
+  }
+
+  \subfloat[硬X線]{
+    \begin{tabular}{|c|c|} \hline
+      項目 & 値 \\ \hline
+      エネルギー & 4.0 keV \\
+      波長 & 0.310 nm \\
+      画素数 & $4096 \times 4096$ \\
+      焦点面画素サイズ & 1.0 nm \\ \hline
+    \end{tabular}
+    \label{tb:ideal_simulation_params_xray}
+  }
+\caption[]{計算条件}
+\label{tb:ideal_simulation_params}
+\end{table}
+
+
 \begin{figure}[!ht]
 \centering
-
-\subfloat[可視光(632.8nm)]{
-    \includegraphics[width=3cm]{ideal/visible_light_focus_abs.png}
-    \label{fig:visible_light_ideal_focus_abs}
+\subfloat[焦点面強度分布]{
+    \includegraphics[width=5cm]{ideal/focus_visible.png}
+    \label{fig:ideal_focus_visible}
 }
-\subfloat[4keV]{
-    \centering
-    \includegraphics[width=3cm]{ideal/3keV_focus_abs.png}
-    \label{fig:4keV_ideal_focus_abs}
+\subfloat[焦点面強度プロファイル ($y=0$)]{
+    \includegraphics[width=8cm]{ideal/focus_profile_visible.png}
+    \label{fig:ideal_focus_profile_visible}
 }
-\caption[]{理想的なミラーの各波長に対する集光波面}
-\label{fig:fwhm_explanation}
+\caption[]{可視光 (632.8 nm)}
+\label{fig:ideal_simulation_visible}
 \end{figure}
-\end{comment}
 
-表\ref{tb:ideal_focus_evaluation}にそれぞれの波長に対するHPDおよびFWHMを示す。
-理想集光の場合は集光波面が回転対象になっているため、FWHMは任意の横方向の1本のプロファイルに対してのみ示す。
+\begin{figure}[!ht]
+\centering
+\subfloat[焦点面強度分布]{
+    \includegraphics[width=5cm]{ideal/focus_xray.png}
+    \label{fig:ideal_focus_xray}
+}
+\subfloat[焦点面強度プロファイル ($y=0$)]{
+    \includegraphics[width=8cm]{ideal/focus_profile_xray.png}
+    \label{fig:ideal_focus_profile_xray}
+}
+\caption[]{硬X線 (4 keV)}
+\label{fig:ideal_simulation_xray}
+\end{figure}
+
+
+これに対して、それぞれの波長に対するHPDおよびFWHMを表\ref{tb:ideal_focus_evaluation}に示す。
+ただし、理想集光の場合は集光面強度分布が回転対象になっているため、FWHMは$y=0$の1本のプロファイルに対してのみ示す。
 
 \begin{table}[!ht]
 \begin{center}
   \begin{tabular}{|c|c|c|} \hline
     項目 & 可視光(632.8nm) & 4keV \\ \hline
-    HPD & 8.989 mm & \SI{19.45}{\micro \metre} \\
+    HPD & 4.41 mm & \SI{18.2}{\micro \metre} \\
     FWHM & \SI{19.53}{\micro \metre} & \SI{0}{\micro \metre} \\ \hline
   \end{tabular}
   \caption{理想集光の場合のHPDおよびFWHM}
