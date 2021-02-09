@@ -79,8 +79,8 @@ Strehl比による比較検討では「回折限界集光をしているか」�
 \label{fig:hpd_explanation}
 \end{figure}
 
-あるHPDを持つようなのふたつの結像点を分離できるような限界の配置が図\ref{fig:hpd_resolution_limit}のときであるとするならば、1秒角分解能という達成目標は図\ref{fig:hpd_arcsecond}が示すようなHPDで言い換えることができる。
-つまり、ミラー上流端中心から半径を見込む角度がちょうど1秒角となるようなHPDが達成目標となる。
+あるHPDを持つようなのふたつの結像点を分離できるような限界の配置が図\ref{fig:hpd_resolution_limit}のときであるとするならば、0.5秒角分解能という達成目標は図\ref{fig:hpd_arcsecond}が示すようなHPDで言い換えることができる。
+つまり、ミラー上流端中心から半径を見込む角度がちょうど0.5秒角となるようなHPDが達成目標となる。
 具体的には、ミラー上流端開口から焦点面までの距離2.1025 mに対してHPDは\SI{10.19}{\micro \metre}と計算される。
 HPDを指標とした評価では、これを基準とする。
 
@@ -163,13 +163,13 @@ Fresnel回折近似が成り立つための条件は、近似で切り捨てる�
 
 \begin{table}[!ht]
 \begin{center}
+  \caption{Fresnel回折近似適用可能性の検討1}
   \begin{tabular}{|c|c|} \hline
     項目 & 値 \\ \hline
     波長 & 632.8 nm \\
     画素数 & $2048 \times 2048$ \\
     焦点面ピクセルサイズ & \SI{5.0}{\micro \metre} \\ \hline
   \end{tabular}
-  \caption{Fresnel回折近似適用可能性の検討1}
   \label{tb:check_approximation_validity_1}
 \end{center}
 \end{table}
@@ -188,13 +188,13 @@ Fresnel回折近似が成り立つための条件は、近似で切り捨てる�
 
 \begin{table}[!ht]
 \begin{center}
+  \caption{Fresnel回折近似適用可能性の検討2}
   \begin{tabular}{|c|c|} \hline
     項目 & 値 \\ \hline
     波長 & 632.8 nm \\
     画素数 & $4096 \times 4096$ \\
     焦点面ピクセルサイズ & \SI{1.0}{\micro \metre} \\ \hline
   \end{tabular}
-  \caption{Fresnel回折近似適用可能性の検討2}
   \label{tb:check_approximation_validity_2}
 \end{center}
 \end{table}
@@ -322,12 +322,12 @@ Fresnel回折近似が成り立つための条件は、近似で切り捨てる�
 
 \begin{table}[!ht]
 \begin{center}
+  \caption{シミュレーションで入力する波長・エネルギー}
   \begin{tabular}{|c|c|l|} \hline
     エネルギー & 波長 & 説明 \\ \hline
     4.0 keV & 0.310 nm & 太陽コロナの観測時に対象となるX線 \\
     19.59 eV & 632.8 nm & 可視光計測に用いるHe-Neレーザー \\ \hline
   \end{tabular}
-  \caption{シミュレーションで入力する波長・エネルギー}
   \label{tb:simulation_target_energy}
 \end{center}
 \end{table}
@@ -336,13 +336,19 @@ Fresnel回折近似が成り立つための条件は、近似で切り捨てる�
 \label{chap2_error_input_types}
 
 この節では、入力する形状誤差の種類について述べる。
-まず、形状誤差による波面誤差の線形性について述べておく。
-波面誤差とは、ミラーの形状誤差による光路長の変化量に他ならない。
-平面のミラーで単純化して考えれば、位置
+%まず、形状誤差による波面誤差の線形性について述べておく。
+%波面誤差とは、ミラーの形状誤差による光路長の変化量に他ならない。
+%平面のミラーで単純化して考えれば、位置
 
 形状誤差は周方向および長手方向の2つの軸で分けて考える。
-まず周方向の誤差として、$\Delta r(\theta)=\Delta r_{\mathrm{ideal}}(\theta) + \delta$となる(\ref{sub@fig:diameter_error_schematic})直径誤差、および$\Delta r(\theta)=\Delta r_{\mathrm{ideal}}(\theta) + \delta(\theta)$ ($\delta(\theta)$は平均$0$でp-vが$\delta_{\mathrm{pv}}$)となるような真円度誤差の2種類が存在する。
-後者の真円度誤差は周期によって3種類に分け、$sin(2\theta)$で表される(\ref{sub@fig:oval_error_schematic})2山誤差、および(\ref{sub@fig:roundness_medium_error_schematic})中周期誤差、(\ref{sub@fig:roundness_short_error_schematic})短周期誤差として扱う。
+まず周方向の誤差として、$\Delta r(\theta)=\delta=const$となる(\ref{sub@fig:diameter_error_schematic})直径誤差、および$\Delta r(\theta)=\Delta r_{\mathrm{ideal}}(\theta) + \delta(\theta)$ ($\delta(\theta)$は平均$0$、p-v値が$\delta_{\mathrm{pv}}$の関数)となるような真円度誤差の2種類が存在する。
+後者の真円度誤差はさらに周期によって分類し、
+周期 $40^\circ$から $120^\circ$の(\ref{sub@fig:roundness_medium_error_schematic})長周期誤差、
+周期 $10^\circ$から $40^\circ$の(\ref{sub@fig:roundness_medium_error_schematic})中周期誤差、
+周期 $1^\circ$から $10^\circ$の(\ref{sub@fig:roundness_short_error_schematic})短周期誤差として扱う。
+また、特徴的な形状として$sin(2\theta)$で表される(\ref{sub@fig:oval_error_schematic})2山誤差についても解析を行う。
+
+続いて、長手方向の誤差として、斜入射角が(\ref{sub@fig:diameter_error_schematic})直径誤差
 
 \begin{figure}[!ht]
 \centering
@@ -355,6 +361,10 @@ Fresnel回折近似が成り立つための条件は、近似で切り捨てる�
 \subfloat[周方向2山誤差]{
     \includegraphics[height=3cm]{error_types/oval_error_schematic.png}
     \label{fig:oval_error_schematic}
+}\\
+\subfloat[周方向長周期誤差]{
+    \includegraphics[height=3cm]{error_types/roundness_long_error_schematic.png}
+    \label{fig:roundness_long_error_schematic}
 }
 \hspace{5mm}
 \subfloat[周方向中周期誤差]{
@@ -367,7 +377,6 @@ Fresnel回折近似が成り立つための条件は、近似で切り捨てる�
     \label{fig:roundness_short_error_schematic}
 }
 \\
-
 \subfloat[テーパー角誤差]{
     \includegraphics[height=3cm]{error_types/taper_error_schematic.png}
     \label{fig:taper_error_schematic}
@@ -405,34 +414,22 @@ Fresnel回折近似が成り立つための条件は、近似で切り捨てる�
 誤差入力を与える前に、誤差のない理想的なミラー形状に対する集光面強度分布を計算しておく。
 表\ref{tb:ideal_simulation_params}に計算の条件を、またこれに対する可視光と硬X線に対する計算結果を図\ref{fig:ideal_simulation_visible}および図\ref{fig:ideal_simulation_xray}に示す。
 
+% 計算条件の表
 \begin{table}[!ht]
-\centering
-  \subfloat[可視光]{
-    \begin{tabular}{|c|c|} \hline
-      項目 & 値 \\ \hline
-      エネルギー & 19.59 eV \\
-      波長 & 632.8 nm \\
-      画素数 & $4096 \times 4096$ \\
-      焦点面画素サイズ & \SI{1.0}{\micro \metre} \\ \hline
-    \end{tabular}
-    \label{tb:ideal_simulation_params_visible}
-  }
-
-  \subfloat[硬X線]{
-    \begin{tabular}{|c|c|} \hline
-      項目 & 値 \\ \hline
-      エネルギー & 4.0 keV \\
-      波長 & 0.310 nm \\
-      画素数 & $4096 \times 4096$ \\
-      焦点面画素サイズ & 1.0 nm \\ \hline
-    \end{tabular}
-    \label{tb:ideal_simulation_params_xray}
-  }
-\caption[]{計算条件}
-\label{tb:ideal_simulation_params}
+\begin{center}
+  \caption[]{計算条件}
+  \begin{tabular}{|c c c|} \hline
+    項目 & 可視光 & 硬X線 \\ \hline
+    エネルギー & 19.59 eV & 4.0 keV \\
+    波長 & 632.8 nm & 0.310 nm \\
+    焦点面画素サイズ & \SI{1.0}{\micro \metre} & 1.0 nm \\
+    画素数 & \multicolumn{2}{c|}{$4096 \times 4096$} \\\hline
+  \end{tabular}
+  \label{tb:ideal_simulation_params}
+\end{center}
 \end{table}
 
-
+% 計算結果の図
 \begin{figure}[!ht]
 \centering
 \subfloat[焦点面強度分布]{
@@ -467,12 +464,12 @@ Fresnel回折近似が成り立つための条件は、近似で切り捨てる�
 
 \begin{table}[!ht]
 \begin{center}
+  \caption{理想集光の場合のHPDおよびFWHM}
   \begin{tabular}{|c|c|c|} \hline
     項目 & 可視光(632.8nm) & 4keV \\ \hline
     HPD & 4.41 mm & \SI{18.2}{\micro \metre} \\
     FWHM & \SI{19.53}{\micro \metre} & \SI{0}{\micro \metre} \\ \hline
   \end{tabular}
-  \caption{理想集光の場合のHPDおよびFWHM}
   \label{tb:ideal_focus_evaluation}
 \end{center}
 \end{table}
@@ -489,18 +486,50 @@ Fresnel回折近似が成り立つための条件は、近似で切り捨てる�
 \subsection{X線に対する許容誤差量の解析}
 \label{chap2_xray_allowed_error}
 
-まず、4 keV のX線を光源とした場合について、回折限界集光および目標のHPDを達成する上で許容される最大の誤差量を求める。
+まず、4 keV のX線を光源とした場合について、ちょうどStrehl比 0.8 あるいはHPD 0.5 秒角となる誤差量を解析する。
+誤差量に対するStrehl比およびHPDの変化のグラフを図\ref{fig:xray_allowed_error_analysis}に、またそこから求まる許容誤差量の解析結果を表\ref{tb:xray_allowed_error}に示す。
+
+\begin{figure}[!ht]
+\centering
+\subfloat[\ref{sub@fig:oval_error_schematic}周方向2山誤差 Strehl比]{
+    \includegraphics[width=7cm]{error_response/oval/strehl.png}
+    \label{fig:oval_error_strehl}
+}
+\subfloat[HPD]{
+    \includegraphics[width=7cm]{error_response/oval/hpd.png}
+    \label{fig:oval_error_hpd}
+}
+\caption[]{誤差量に対するStrehl比およびHPDの変化}
+\label{fig:xray_allowed_error_analysis}
+\end{figure}
 
 \begin{table}[!ht]
 \begin{center}
-  \begin{tabular}{|c|c|c|} \hline
-    形状誤差の種類 & Strehl比0.8 & HPD 1 秒角 \\ \hline
-    (\ref{sub@fig:diameter_error_schematic}) 直径誤差 & 0.0 mm & 0.0 mm
-  \end{tabular}
   \caption{理想集光の場合のHPDおよびFWHM}
+  \begin{tabular}{|c|c|c|} \hline
+    形状誤差の種類 & Strehl比0.8 & HPD 0.5 秒角 \\ \hline
+    (\ref{sub@fig:diameter_error_schematic}) 直径誤差 & 0.0 mm & 0.0 mm \\
+    (\ref{sub@fig:oval_error_schematic}) 周方向2山誤差 & 2.0 nm & \SI{1.5}{\micro \metre}
+  \end{tabular}
   \label{tb:xray_allowed_error}
 \end{center}
 \end{table}
+
+また、これらに対応する集光面強度分布を示す。
+
+\begin{figure}[!ht]
+\centering
+\subfloat[焦点面強度分布]{
+    \includegraphics[width=5cm]{ideal/focus_xray.png}
+    \label{fig:ideal_focus_xray}
+}
+\subfloat[焦点面強度プロファイル ($y=0$)]{
+    \includegraphics[width=8cm]{ideal/focus_profile_xray.png}
+    \label{fig:ideal_focus_profile_xray}
+}
+\caption[]{硬X線 (4 keV)}
+\label{fig:xray_just_allowed_focus}
+\end{figure}
 
 
 \clearpage

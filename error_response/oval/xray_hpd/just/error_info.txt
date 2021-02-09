@@ -1,0 +1,3 @@
+Wavelength: 0.30996 [nm]
+Error: 2 [um]
+HPD: 6.64348e-06 [m]
